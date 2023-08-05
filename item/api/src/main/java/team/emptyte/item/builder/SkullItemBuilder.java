@@ -26,7 +26,7 @@ public class SkullItemBuilder extends ItemBuilderLayout<SkullItemBuilder> {
   public @NotNull ItemStack build() {
     SkinProvider provider = null;
     switch (this.skinModel.providerId()) {
-      case "bas64" -> provider = Base64SkinProvider.INSTANCE;
+      case "base64" -> provider = Base64SkinProvider.INSTANCE;
       case "material" -> provider = MaterialSkinProvider.INSTANCE;
     }
 
