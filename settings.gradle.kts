@@ -8,9 +8,7 @@ pluginManagement {
 }
 
 // item modules
-arrayOf("api", "skull-api").forEach {
-    includePrefixed("item:$it")
-}
+includePrefixed("item:api")
 
 // menu modules
 arrayOf("api", "plugin").forEach {

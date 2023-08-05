@@ -3,7 +3,7 @@ package team.unnamed.gui.item.util;
 import org.bukkit.DyeColor;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import team.unnamed.gui.item.ItemBuilder;
+import team.unnamed.gui.item.builder.ItemBuilder;
 
 public final class DecorateItemUtils {
 
