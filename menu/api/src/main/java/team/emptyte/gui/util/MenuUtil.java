@@ -19,7 +19,7 @@ public final class MenuUtil {
   static {
     try {
       WRAPPER_CONSTRUCTOR = Class.forName(
-          "team.unnamed.gui.menu." + ServerVersion.CURRENT
+          "team.emptyte.gui." + ServerVersion.CURRENT
           + ".MenuInventoryWrapperImpl"
         )
                               .getConstructor(InventoryHolder.class, MenuInventory.class);
