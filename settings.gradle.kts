@@ -11,9 +11,7 @@ pluginManagement {
 includePrefixed("item:api")
 
 // menu modules
-arrayOf("api", "plugin").forEach {
-    includePrefixed("menu:$it")
-}
+includePrefixed("menu:api")
 
 // menu adapters
 arrayOf("1_17_R1", "1_20_R1").forEach {

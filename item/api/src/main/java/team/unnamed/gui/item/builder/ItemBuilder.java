@@ -6,6 +6,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import team.unnamed.gui.item.flag.ItemFlag;
+import team.unnamed.gui.item.skull.model.SkinModel;
 import team.unnamed.gui.item.util.DyeItemUtils;
 
 import java.util.List;
@@ -33,23 +34,23 @@ public interface ItemBuilder {
 
     @NotNull ItemStack build();
 
-    static ItemBuilder builder(final @NotNull Material material) {
+    static @NotNull ItemBuilder builder(final @NotNull Material material) {
         return builder(material, 1);
     }
 
-    static ItemBuilder builder(final @NotNull Material material, final int amount) {
-        return builder(material, amount, (byte) 0);
+    static @NotNull ItemBuilder builder(final @NotNull Material material, final int amount) {
+        return new DefaultItemBuilder(material, amount);
     }
 
-    static ItemBuilder builder(final @NotNull Material material, final int amount, final byte data) {
-        return new DefaultItemBuilder(material, amount, data);
+    static @NotNull ItemBuilder skullBuilder(final @NotNull SkinModel skinModel, final int amount) {
+      return new SkullItemBuilder(skinModel, amount);
     }
 
-    static ItemBuilder dyeBuilder(final @NotNull String materialKey, final @NotNull DyeColor dyeColor) {
+    static @NotNull ItemBuilder dyeBuilder(final @NotNull String materialKey, final @NotNull DyeColor dyeColor) {
         return dyeBuilder(materialKey, dyeColor, 1);
     }
 
-    static ItemBuilder dyeBuilder(final @NotNull String materialKey, final @NotNull DyeColor dyeColor, final @NotNull int amount) {
+    static @NotNull ItemBuilder dyeBuilder(final @NotNull String materialKey, final @NotNull DyeColor dyeColor, final @NotNull int amount) {
         return DyeItemUtils.createBuilder(materialKey, dyeColor, amount);
     }
 
