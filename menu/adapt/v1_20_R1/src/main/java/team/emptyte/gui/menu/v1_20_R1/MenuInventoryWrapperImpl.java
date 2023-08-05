@@ -8,31 +8,30 @@ import team.emptyte.gui.menu.adapt.MenuInventoryWrapper;
 import team.emptyte.gui.menu.type.MenuInventory;
 
 public class MenuInventoryWrapperImpl extends CraftInventoryCustom
-        implements MenuInventoryWrapper {
+  implements MenuInventoryWrapper {
 
-    private final MenuInventory menuInventory;
+  private final MenuInventory menuInventory;
 
-    public MenuInventoryWrapperImpl(
-            InventoryHolder owner,
-            MenuInventory menuInventory
-    ) {
-        super(
-                owner,
-                menuInventory.getSlots(),
-                menuInventory.getTitle()
-        );
+  public MenuInventoryWrapperImpl(
+    InventoryHolder owner,
+    MenuInventory menuInventory
+  ) {
+    super(
+      owner,
+      menuInventory.getSlots(),
+      menuInventory.getTitle()
+    );
 
-        this.menuInventory = menuInventory;
-    }
+    this.menuInventory = menuInventory;
+  }
 
-    @Override
-    public @NotNull Inventory getRawInventory() {
-        return this;
-    }
+  @Override
+  public @NotNull Inventory getRawInventory() {
+    return this;
+  }
 
-    @Override
-    public @NotNull MenuInventory getMenuInventory() {
-        return menuInventory;
-    }
-
+  @Override
+  public @NotNull MenuInventory getMenuInventory() {
+    return menuInventory;
+  }
 }

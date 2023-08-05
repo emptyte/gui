@@ -8,16 +8,15 @@ import java.util.function.Predicate;
 
 public interface ItemClickableAction {
 
-    ItemClickableAction CANCEL_CLICK = new SingleClickableAction(inventory -> true);
+  ItemClickableAction CANCEL_CLICK = new SingleClickableAction(inventory -> true);
 
-    @Nullable Predicate<InventoryClickEvent> getAction(ClickType clickType);
+  @Nullable Predicate<InventoryClickEvent> getAction(ClickType clickType);
 
-    static ItemClickableActionBuilder builder() {
-        return new ItemClickableActionBuilder();
-    }
+  static ItemClickableActionBuilder builder() {
+    return new ItemClickableActionBuilder();
+  }
 
-    static ItemClickableAction single(Predicate<InventoryClickEvent> action) {
-        return new SingleClickableAction(action);
-    }
-
+  static ItemClickableAction single(Predicate<InventoryClickEvent> action) {
+    return new SingleClickableAction(action);
+  }
 }

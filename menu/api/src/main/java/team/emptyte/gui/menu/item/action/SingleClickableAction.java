@@ -6,17 +6,16 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import java.util.function.Predicate;
 
 public class SingleClickableAction
-        implements ItemClickableAction {
+  implements ItemClickableAction {
 
-    private final Predicate<InventoryClickEvent> action;
+  private final Predicate<InventoryClickEvent> action;
 
-    protected SingleClickableAction(Predicate<InventoryClickEvent> action) {
-        this.action = action;
-    }
+  protected SingleClickableAction(Predicate<InventoryClickEvent> action) {
+    this.action = action;
+  }
 
-    @Override
-    public Predicate<InventoryClickEvent> getAction(ClickType clickType) {
-        return action;
-    }
-
+  @Override
+  public Predicate<InventoryClickEvent> getAction(ClickType clickType) {
+    return action;
+  }
 }

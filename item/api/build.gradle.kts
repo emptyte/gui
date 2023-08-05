@@ -1,5 +1,5 @@
 plugins {
-    id("gui.publishing-conventions")
+  id("gui.publishing-conventions")
 }
 
 dependencies {

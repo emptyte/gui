@@ -10,52 +10,51 @@ import java.util.function.Predicate;
 
 public interface MenuInventory {
 
-    static MenuInventoryBuilder newBuilder(String title) {
-        return new DefaultMenuInventoryBuilder(title);
-    }
+  static MenuInventoryBuilder newBuilder(String title) {
+    return new DefaultMenuInventoryBuilder(title);
+  }
 
-    static MenuInventoryBuilder newBuilder(String title, int rows) {
-        return new DefaultMenuInventoryBuilder(title, rows);
-    }
+  static MenuInventoryBuilder newBuilder(String title, int rows) {
+    return new DefaultMenuInventoryBuilder(title, rows);
+  }
 
-    static StringLayoutMenuInventoryBuilder newStringLayoutBuilder(String title) {
-        return new StringLayoutMenuInventoryBuilder(title);
-    }
+  static StringLayoutMenuInventoryBuilder newStringLayoutBuilder(String title) {
+    return new StringLayoutMenuInventoryBuilder(title);
+  }
 
-    static StringLayoutMenuInventoryBuilder newStringLayoutBuilder(String title, int rows) {
-        return new StringLayoutMenuInventoryBuilder(title, rows);
-    }
+  static StringLayoutMenuInventoryBuilder newStringLayoutBuilder(String title, int rows) {
+    return new StringLayoutMenuInventoryBuilder(title, rows);
+  }
 
-    static <E> PaginatedMenuInventoryBuilder<E> newPaginatedBuilder(Class<E> entityType, String title) {
-        return new PaginatedMenuInventoryBuilder<>(title);
-    }
+  static <E> PaginatedMenuInventoryBuilder<E> newPaginatedBuilder(Class<E> entityType, String title) {
+    return new PaginatedMenuInventoryBuilder<>(title);
+  }
 
-    static <E> PaginatedMenuInventoryBuilder<E> newPaginatedBuilder(Class<E> entityType, String title, int rows) {
-        return new PaginatedMenuInventoryBuilder<>(title, rows);
-    }
+  static <E> PaginatedMenuInventoryBuilder<E> newPaginatedBuilder(Class<E> entityType, String title, int rows) {
+    return new PaginatedMenuInventoryBuilder<>(title, rows);
+  }
 
-    @NotNull
-    String getTitle();
+  @NotNull
+  String getTitle();
 
-    int getSlots();
+  int getSlots();
 
-    @NotNull
-    List<ItemClickable> getItems();
+  @NotNull
+  List<ItemClickable> getItems();
 
-    void clearItems();
+  void clearItems();
 
-    void setItem(ItemClickable item);
+  void setItem(ItemClickable item);
 
-    void removeItem(int slot);
+  void removeItem(int slot);
 
-    @Nullable Predicate<Inventory> getOpenAction();
+  @Nullable Predicate<Inventory> getOpenAction();
 
-    @Nullable Predicate<Inventory> getCloseAction();
+  @Nullable Predicate<Inventory> getCloseAction();
 
-    boolean canIntroduceItems();
+  boolean canIntroduceItems();
 
-    default @Nullable ItemClickable getItem(int slot) {
-        return getItems().get(slot);
-    }
-
+  default @Nullable ItemClickable getItem(int slot) {
+    return getItems().get(slot);
+  }
 }

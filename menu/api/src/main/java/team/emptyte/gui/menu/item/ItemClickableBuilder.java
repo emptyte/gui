@@ -12,35 +12,34 @@ import static team.unnamed.validate.Validate.isNotNull;
 
 public class ItemClickableBuilder {
 
-    private final int slot;
-    private ItemStack item;
-    private ItemClickableAction action;
+  private final int slot;
+  private ItemStack item;
+  private ItemClickableAction action;
 
-    protected ItemClickableBuilder(int slot) {
-        this.slot = slot;
-    }
+  protected ItemClickableBuilder(int slot) {
+    this.slot = slot;
+  }
 
-    public ItemClickableBuilder item(ItemStack item) {
-        this.item = isNotNull(item, "Item cannot be null.");
-        return this;
-    }
+  public ItemClickableBuilder item(ItemStack item) {
+    this.item = isNotNull(item, "Item cannot be null.");
+    return this;
+  }
 
-    public ItemClickableBuilder multipleAction(Consumer<ItemClickableActionBuilder.Multiple> action) {
-        ItemClickableActionBuilder.Multiple actionBuilder = ItemClickableAction.builder()
-                .multipleAction();
-        action.accept(actionBuilder);
-        this.action = actionBuilder.build();
-        return this;
-    }
+  public ItemClickableBuilder multipleAction(Consumer<ItemClickableActionBuilder.Multiple> action) {
+    ItemClickableActionBuilder.Multiple actionBuilder = ItemClickableAction.builder()
+                                                          .multipleAction();
+    action.accept(actionBuilder);
+    this.action = actionBuilder.build();
+    return this;
+  }
 
-    public ItemClickableBuilder action(Predicate<InventoryClickEvent> action) {
-        isNotNull(action, "Action cannot be null.");
-        this.action = ItemClickableAction.single(action);
-        return this;
-    }
+  public ItemClickableBuilder action(Predicate<InventoryClickEvent> action) {
+    isNotNull(action, "Action cannot be null.");
+    this.action = ItemClickableAction.single(action);
+    return this;
+  }
 
-    public ItemClickable build() {
-        return ItemClickable.of(this.slot, this.item, this.action);
-    }
-
+  public ItemClickable build() {
+    return ItemClickable.of(this.slot, this.item, this.action);
+  }
 }

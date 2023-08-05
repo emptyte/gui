@@ -1,19 +1,18 @@
 package team.emptyte.gui.menu.type;
 
 public class DefaultMenuInventoryBuilder
-        extends MenuInventoryBuilderLayout<DefaultMenuInventoryBuilder> {
+  extends MenuInventoryBuilderLayout<DefaultMenuInventoryBuilder> {
 
-    protected DefaultMenuInventoryBuilder(String title) {
-        super(title);
-    }
+  protected DefaultMenuInventoryBuilder(String title) {
+    super(title);
+  }
 
-    protected DefaultMenuInventoryBuilder(String title, int rows) {
-        super(title, rows);
-    }
+  protected DefaultMenuInventoryBuilder(String title, int rows) {
+    super(title, rows);
+  }
 
-    @Override
-    protected DefaultMenuInventoryBuilder back() {
-        return this;
-    }
-
+  @Override
+  protected DefaultMenuInventoryBuilder back() {
+    return this;
+  }
 }

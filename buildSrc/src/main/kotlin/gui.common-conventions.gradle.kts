@@ -1,5 +1,5 @@
 plugins {
-    `java-library`
+  `java-library`
 }
 
 repositories {
@@ -13,13 +13,13 @@ repositories {
 }
 
 configure<JavaPluginExtension> {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
-    }
+  toolchain {
+    languageVersion.set(JavaLanguageVersion.of(17))
+  }
 }
 
 tasks {
-    compileJava {
-      options.compilerArgs.add("-parameters")
-    }
+  compileJava {
+    options.compilerArgs.add("-parameters")
+  }
 }

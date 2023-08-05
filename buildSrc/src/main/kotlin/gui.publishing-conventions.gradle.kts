@@ -1,12 +1,12 @@
 plugins {
-    id("gui.common-conventions")
-    `maven-publish`
+  id("gui.common-conventions")
+  `maven-publish`
 }
 
 publishing {
-    publications {
-        create<MavenPublication>("maven") {
-            from(components["java"])
-        }
+  publications {
+    create<MavenPublication>("maven") {
+      from(components["java"])
     }
+  }
 }

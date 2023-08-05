@@ -6,8 +6,7 @@ import team.emptyte.gui.menu.type.MenuInventory;
 
 public interface MenuInventoryWrapper {
 
-    @NotNull MenuInventory getMenuInventory();
+  @NotNull MenuInventory getMenuInventory();
 
-    @NotNull Inventory getRawInventory();
-
+  @NotNull Inventory getRawInventory();
 }
