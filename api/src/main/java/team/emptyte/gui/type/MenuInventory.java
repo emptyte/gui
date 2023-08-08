@@ -6,6 +6,9 @@ import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import team.emptyte.gui.item.ItemClickable;
+import team.emptyte.gui.type.builder.DefaultMenuInventoryBuilder;
+import team.emptyte.gui.type.builder.MenuInventoryBuilder;
+import team.emptyte.gui.type.builder.PaginatedMenuInventoryBuilder;
 import team.emptyte.gui.util.MenuUtil;
 
 public class MenuInventory {
@@ -30,6 +33,40 @@ public class MenuInventory {
     this.openAction = openAction;
     this.closeAction = closeAction;
     this.canIntroduceItems = canIntroduceItems;
+  }
+
+  public static @NotNull MenuInventoryBuilder newBuilder(final @NotNull String title) {
+    return new DefaultMenuInventoryBuilder(title);
+  }
+
+  public static @NotNull MenuInventoryBuilder newBuilder(final @NotNull String title, final int rows) {
+    return new DefaultMenuInventoryBuilder(title, rows);
+  }
+
+  public static @NotNull StringLayoutMenuInventoryBuilder newStringLayoutBuilder(final @NotNull String title) {
+    return new StringLayoutMenuInventoryBuilder(title);
+  }
+
+  public static @NotNull StringLayoutMenuInventoryBuilder newStringLayoutBuilder(
+    final @NotNull String title,
+    final int rows
+  ) {
+    return new StringLayoutMenuInventoryBuilder(title, rows);
+  }
+
+  public static <E> @NotNull PaginatedMenuInventoryBuilder<E> newPaginatedBuilder(
+    final @NotNull Class<E> entityType,
+    final @NotNull String title
+  ) {
+    return new PaginatedMenuInventoryBuilder<>(title);
+  }
+
+  public static <E> @NotNull PaginatedMenuInventoryBuilder<E> newPaginatedBuilder(
+    final @NotNull Class<E> entityType,
+    final @NotNull String title,
+    final int rows
+  ) {
+    return new PaginatedMenuInventoryBuilder<>(title, rows);
   }
 
   public @NotNull String title() {

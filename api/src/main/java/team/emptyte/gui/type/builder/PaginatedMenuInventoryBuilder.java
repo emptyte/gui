@@ -27,11 +27,11 @@ public class PaginatedMenuInventoryBuilder<E> extends StringLayoutMenuInventoryB
   private ItemClickable itemIfNoPreviousPage;
   private ItemClickable itemIfNoNextPage;
 
-  protected PaginatedMenuInventoryBuilder(final @NotNull String title) {
+  public PaginatedMenuInventoryBuilder(final @NotNull String title) {
     super(title);
   }
 
-  protected PaginatedMenuInventoryBuilder(final @NotNull String title, final int rows) {
+  public PaginatedMenuInventoryBuilder(final @NotNull String title, final int rows) {
     super(title, rows);
   }
 

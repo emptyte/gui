@@ -4,11 +4,11 @@ import org.jetbrains.annotations.NotNull;
 
 public class DefaultMenuInventoryBuilder extends AbstractInventoryBuilder<DefaultMenuInventoryBuilder> {
 
-  protected DefaultMenuInventoryBuilder(final @NotNull String title) {
+  public DefaultMenuInventoryBuilder(final @NotNull String title) {
     super(title);
   }
 
-  protected DefaultMenuInventoryBuilder(final @NotNull String title, final int rows) {
+  public DefaultMenuInventoryBuilder(final @NotNull String title, final int rows) {
     super(title, rows);
   }
 
