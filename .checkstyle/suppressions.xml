@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suppressions PUBLIC "-//Checkstyle//DTD SuppressionFilter Configuration 1.2//EN" "http://checkstyle.org/dtds/suppressions_1_2.dtd">
+<suppressions>
+  <!-- ignore package as we need v_1_X_RX format -->
+  <suppress files="adapt[\\/]v1_17_R1[\\/]src[\\/]main[\\/]java[\\/].*" checks="PackageName"/>
+  <suppress files="adapt[\\/]v1_20_R1[\\/]src[\\/]main[\\/]java[\\/].*" checks="PackageName"/>
+</suppressions>
