@@ -1,21 +1,15 @@
+import java.nio.file.Files
+
 rootProject.name = "gui"
 
-pluginManagement {
-  repositories {
-    gradlePluginPortal()
-    maven("https://papermc.io/repo/repository/maven-public/")
-  }
-}
-
-// item modules
-includePrefixed("item:api")
-
 // menu modules
-includePrefixed("menu:api")
+includePrefixed("api")
 
-// menu adapters
-arrayOf("1_17_R1", "1_20_R1").forEach {
-  includePrefixed("menu:adapt:v$it")
+Files.walk(rootDir.toPath().resolve("adapt"), 1).forEach {
+  val name = it.fileName.toString()
+  if (Files.isDirectory(it) && name.startsWith("v")) {
+    includePrefixed("adapt:$name")
+  }
 }
 
 fun includePrefixed(name: String) {

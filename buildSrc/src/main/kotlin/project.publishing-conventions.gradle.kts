@@ -1,5 +1,5 @@
 plugins {
-  id("gui.common-conventions")
+  id("project.base-conventions")
   `maven-publish`
 }
 
