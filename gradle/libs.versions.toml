@@ -1,0 +1,17 @@
+[metadata]
+version = "1.0"
+
+[versions]
+checkstyle = "10.12.3"
+indra = "3.1.3"
+
+[libraries]
+paper = "io.papermc.paper:paper-api:1.20.1-R0.1-SNAPSHOT"
+emptyte = "team.emptyte:emptyte-paper-core:2.0.2"
+storage-gson = "org.fenixteam:storage-gson-dist:1.0.0"
+configurate = "org.spongepowered:configurate-gson:4.0.0"
+
+build-indra = { module = "net.kyori:indra-common", version.ref = "indra" }
+build-spotless = "com.diffplug.spotless:spotless-plugin-gradle:6.22.0"
+
+stylecheck = "ca.stellardrift:stylecheck:0.2.1"
