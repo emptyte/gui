@@ -1,7 +1,7 @@
 plugins {
-  id("project.publishing-conventions")
+  id("gui.publishing-conventions")
 }
 
 dependencies {
-  api("team.unnamed:commons-bukkit:3.1.0")
+  api(libs.items)
 }
