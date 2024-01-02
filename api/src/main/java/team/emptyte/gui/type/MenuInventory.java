@@ -1,112 +1,69 @@
 package team.emptyte.gui.type;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
-import org.bukkit.inventory.Inventory;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import team.emptyte.gui.item.ItemClickable;
-import team.emptyte.gui.type.builder.DefaultMenuInventoryBuilder;
-import team.emptyte.gui.type.builder.MenuInventoryBuilder;
-import team.emptyte.gui.type.builder.PaginatedMenuInventoryBuilder;
-import team.emptyte.gui.util.MenuUtil;
+import team.emptyte.items.parser.model.ItemModel;
 
-public class MenuInventory {
-  protected final String title;
-  protected final int slots;
-  protected final List<ItemClickable> items;
-  protected final Predicate<Inventory> openAction;
-  protected final Predicate<Inventory> closeAction;
-  protected final boolean canIntroduceItems;
+public abstract class MenuInventory {
+  private final Component title;
+  private final byte slots;
 
-  public MenuInventory(
-    final @NotNull String title,
-    final int slots,
-    final @NotNull List<ItemClickable> items,
-    final @NotNull Predicate<Inventory> openAction,
-    final @NotNull Predicate<Inventory> closeAction,
-    final boolean canIntroduceItems
-  ) {
-    this.title = title;
-    this.slots = slots;
-    this.items = items;
-    this.openAction = openAction;
-    this.closeAction = closeAction;
-    this.canIntroduceItems = canIntroduceItems;
+  private final boolean applyPlaceholderApi;
+  private final boolean introduceItems;
+
+  private final List<String> layouts;
+  private final List<ItemModel> replacements;
+
+  public MenuInventory(final @NotNull String title) {
+    this(MiniMessage.miniMessage().deserialize(title), false, false, new ArrayList<>(), new ArrayList<>());
   }
 
-  public static @NotNull MenuInventoryBuilder newBuilder(final @NotNull String title) {
+  public MenuInventory(
+    final @NotNull Component title,
+    final boolean applyPlaceholderApi,
+    final boolean introduceItems,
+    final @NotNull List<String> layouts,
+    final @NotNull List<ItemModel> replacements
+  ) {
+    this.title = title;
+    this.applyPlaceholderApi = applyPlaceholderApi;
+    this.introduceItems = introduceItems;
+    this.layouts = layouts;
+    if (this.layouts.isEmpty() || this.layouts.size() > 6) {
+      throw new IllegalArgumentException("The layouts list must not be empty and must not exceed 6 elements");
+    }
+    this.replacements = replacements;
+    this.slots = (byte) (this.layouts.size() * 9);
+  }
+
+  public static @NotNull MenuInventoryBuilder builder(final @NotNull Component title) {
     return new DefaultMenuInventoryBuilder(title);
   }
 
-  public static @NotNull MenuInventoryBuilder newBuilder(final @NotNull String title, final int rows) {
-    return new DefaultMenuInventoryBuilder(title, rows);
-  }
-
-  public static @NotNull StringLayoutMenuInventoryBuilder newStringLayoutBuilder(final @NotNull String title) {
-    return new StringLayoutMenuInventoryBuilder(title);
-  }
-
-  public static @NotNull StringLayoutMenuInventoryBuilder newStringLayoutBuilder(
-    final @NotNull String title,
-    final int rows
-  ) {
-    return new StringLayoutMenuInventoryBuilder(title, rows);
-  }
-
-  public static <E> @NotNull PaginatedMenuInventoryBuilder<E> newPaginatedBuilder(
-    final @NotNull Class<E> entityType,
-    final @NotNull String title
-  ) {
-    return new PaginatedMenuInventoryBuilder<>(title);
-  }
-
-  public static <E> @NotNull PaginatedMenuInventoryBuilder<E> newPaginatedBuilder(
-    final @NotNull Class<E> entityType,
-    final @NotNull String title,
-    final int rows
-  ) {
-    return new PaginatedMenuInventoryBuilder<>(title, rows);
-  }
-
-  public @NotNull String title() {
+  public @NotNull Component title() {
     return this.title;
   }
 
-  public int slots() {
+  public byte slots() {
     return this.slots;
   }
 
-  public @NotNull List<ItemClickable> items() {
-    return this.items;
+  public boolean applyPlaceholderApi() {
+    return this.applyPlaceholderApi;
   }
 
-  public void clearItems() {
-    this.items.clear();
-    MenuUtil.fillItemList(this.items, this.slots);
+  public boolean introduceItems() {
+    return this.introduceItems;
   }
 
-  public @Nullable ItemClickable item(final int slot) {
-    return this.items.get(slot);
+  public @NotNull List<String> layouts() {
+    return this.layouts;
   }
 
-  public void item(final @NotNull ItemClickable item) {
-    this.items.set(item.slot(), item);
-  }
-
-  public void removeItem(final int slot) {
-    this.items.remove(slot);
-  }
-
-  public @Nullable Predicate<Inventory> openAction() {
-    return this.openAction;
-  }
-
-  public @Nullable Predicate<Inventory> closeAction() {
-    return this.closeAction;
-  }
-
-  public boolean canIntroduceItems() {
-    return this.canIntroduceItems;
+  public @NotNull List<ItemModel> replacements() {
+    return this.replacements;
   }
 }
