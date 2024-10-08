@@ -3,7 +3,6 @@ import java.util.*
 
 plugins {
   id("net.kyori.indra")
-  id("net.kyori.indra.checkstyle")
   id("com.diffplug.spotless")
 }
 
@@ -15,7 +14,6 @@ indra {
     minimumToolchain(21)
     strictVersions(true)
   }
-  checkstyle(libs.versions.checkstyle.get())
 }
 
 repositories {
@@ -24,7 +22,6 @@ repositories {
 }
 
 dependencies {
-  checkstyle(libs.stylecheck)
   compileOnly(libs.paper)
   api(libs.storage.gson.dist)
   api(libs.configurate.gson)
@@ -64,7 +61,6 @@ tasks {
   compileJava {
     options.encoding = Charsets.UTF_8.name()
     dependsOn(spotlessApply)
-    dependsOn(checkstyleMain)
     options.compilerArgs.add("-parameters")
   }
 }

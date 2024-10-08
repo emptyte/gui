@@ -2,14 +2,13 @@ pluginManagement {
   includeBuild("build-logic")
 }
 
-rootProject.name = "template"
+rootProject.name = "gui"
 
-sequenceOf("api", "plugin").forEach {
+sequenceOf(
+  "common",
+  "core",
+  "test-plugin"
+).forEach {
   include("${rootProject.name}-$it")
   project(":${rootProject.name}-$it").projectDir = file(it)
 }
-
-/*sequenceOf("1_21").forEach {
-  include("${rootProject.name}-$it")
-  project(":${rootProject.name}-$it").projectDir = file("adapt/$it")
-}*/
