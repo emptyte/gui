@@ -23,8 +23,6 @@ repositories {
 
 dependencies {
   compileOnly(libs.paper)
-  api(libs.storage.gson.dist)
-  api(libs.configurate.gson)
 }
 
 spotless {
