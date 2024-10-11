@@ -21,28 +21,45 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package team.emptyte.gui.core.exception;
+package team.emptyte.gui.common.item;
 
-import java.io.Serial;
-import org.jetbrains.annotations.NotNull;
+public enum LeatherArmorColor {
+  DARK_BLUE(0, 0, 255),
+  LIGHT_BLUE(51, 153, 255),
+  LIGHT_RED(255, 0, 0),
+  DARK_RED(152, 0, 0),
+  CYAN(102, 255, 255),
+  YELLOW(255, 255, 0),
+  ORANGE(255, 128, 0),
+  LIME(0, 255, 0),
+  GREEN(0, 204, 0),
+  PURPLE(76, 0, 153),
+  PINK(255, 153, 255),
+  BLACK(0, 0, 0),
+  WHITE(255, 255, 255),
+  DARK_GRAY(128, 128, 128),
+  LIGHT_GRAY(192, 192, 192);
 
-/**
- * An exception that is thrown when an error occurs in a component.
- *
- * @since 0.0.1
- */
-public class ComponentException extends RuntimeException {
-  @Serial
-  private static final long serialVersionUID = 1L;
+  private final int red;
+  private final int green;
+  private final int blue;
 
-  /**
-   * Constructs a new component exception with the specified detail message.
-   *
-   * @param message the detail message
-   *                (which is saved for later retrieval by the {@link #getMessage()} method)
-   * @since 0.0.1
-   */
-  public ComponentException(final @NotNull String message) {
-    super(message);
+  LeatherArmorColor(final int red, final int green, final int blue) {
+    this.red = red;
+    this.green = green;
+    this.blue = blue;
   }
+
+  public int getRed() {
+    return red;
+  }
+
+  public int getGreen() {
+    return green;
+  }
+
+  public int getBlue() {
+    return blue;
+  }
+
 }

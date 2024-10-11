@@ -21,28 +21,43 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package team.emptyte.gui.core.exception;
+package team.emptyte.gui.common.item.util;
 
-import java.io.Serial;
-import org.jetbrains.annotations.NotNull;
+import org.bukkit.DyeColor;
+import org.bukkit.inventory.ItemStack;
+import team.emptyte.gui.common.item.ItemBuilder;
 
 /**
- * An exception that is thrown when an error occurs in a component.
+ * Utility class for decorating items.
  *
  * @since 0.0.1
  */
-public class ComponentException extends RuntimeException {
-  @Serial
-  private static final long serialVersionUID = 1L;
+public final class DecorateItemUtils {
+  private DecorateItemUtils() {
+    throw new UnsupportedOperationException();
+  }
 
   /**
-   * Constructs a new component exception with the specified detail message.
+   * Creates a new stained pane builder.
    *
-   * @param message the detail message
-   *                (which is saved for later retrieval by the {@link #getMessage()} method)
+   * @param dyeColor the dye color
+   * @return the stained pane builder
    * @since 0.0.1
    */
-  public ComponentException(final @NotNull String message) {
-    super(message);
+  public static ItemBuilder stainedPaneBuilder(DyeColor dyeColor) {
+    return ItemBuilder.dyeBuilder("STAINED_GLASS_PANE", dyeColor)
+      .name(" ");
   }
+
+  /**
+   * Creates a new stained pane.
+   *
+   * @param dyeColor the dye color
+   * @return the stained pane
+   * @since 0.0.1
+   */
+  public static ItemStack stainedPane(DyeColor dyeColor) {
+    return stainedPaneBuilder(dyeColor).build();
+  }
+
 }

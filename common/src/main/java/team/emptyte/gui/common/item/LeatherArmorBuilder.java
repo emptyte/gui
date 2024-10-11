@@ -21,28 +21,46 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package team.emptyte.gui.core.exception;
+package team.emptyte.gui.common.item;
 
-import java.io.Serial;
+import org.bukkit.Color;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.jetbrains.annotations.NotNull;
 
-/**
- * An exception that is thrown when an error occurs in a component.
- *
- * @since 0.0.1
- */
-public class ComponentException extends RuntimeException {
-  @Serial
-  private static final long serialVersionUID = 1L;
+public class LeatherArmorBuilder extends ItemBuilderLayout<LeatherArmorBuilder> {
+  private int red;
+  private int green;
+  private int blue;
 
-  /**
-   * Constructs a new component exception with the specified detail message.
-   *
-   * @param message the detail message
-   *                (which is saved for later retrieval by the {@link #getMessage()} method)
-   * @since 0.0.1
-   */
-  public ComponentException(final @NotNull String message) {
-    super(message);
+  protected LeatherArmorBuilder(final @NotNull Material material, final int amount) {
+    super(material, amount);
+  }
+
+  public @NotNull LeatherArmorBuilder fromLeatherColor(final @NotNull LeatherArmorColor armorColor) {
+    return this.fromRgb(armorColor.getRed(), armorColor.getGreen(), armorColor.getBlue());
+  }
+
+  public @NotNull LeatherArmorBuilder fromRgb(final int red, final int green, final int blue) {
+    this.red = red;
+    this.green = green;
+    this.blue = blue;
+    return this;
+  }
+
+  @Override
+  public @NotNull ItemStack build() {
+    final ItemStack itemStack = super.build();
+    final LeatherArmorMeta armorMeta = (LeatherArmorMeta) itemStack.getItemMeta();
+    armorMeta.setColor(Color.fromRGB(this.red, this.green, this.blue));
+    itemStack.setItemMeta(armorMeta);
+
+    return itemStack;
+  }
+
+  @Override
+  protected @NotNull LeatherArmorBuilder back() {
+    return this;
   }
 }

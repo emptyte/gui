@@ -21,28 +21,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package team.emptyte.gui.core.exception;
+package team.emptyte.gui.core.item;
 
-import java.io.Serial;
+import java.util.function.Predicate;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import team.emptyte.gui.core.item.action.ItemClickableAction;
 
-/**
- * An exception that is thrown when an error occurs in a component.
- *
- * @since 0.0.1
- */
-public class ComponentException extends RuntimeException {
-  @Serial
-  private static final long serialVersionUID = 1L;
+public final class ItemClickableBuilder {
+  private final int slot;
+  private ItemStack itemStack;
+  private ItemClickableAction action;
 
-  /**
-   * Constructs a new component exception with the specified detail message.
-   *
-   * @param message the detail message
-   *                (which is saved for later retrieval by the {@link #getMessage()} method)
-   * @since 0.0.1
-   */
-  public ComponentException(final @NotNull String message) {
-    super(message);
+  public ItemClickableBuilder(final int slot) {
+    this.slot = slot;
+  }
+
+  public @NotNull ItemClickableBuilder item(final @NotNull ItemStack itemStack) {
+    this.itemStack = itemStack;
+    return this;
+  }
+
+  public @NotNull ItemClickableBuilder action(final @NotNull Predicate<@NotNull InventoryClickEvent> action) {
+    this.action = ItemClickableAction.single(action);
+    return this;
+  }
+
+  public @NotNull ItemClickable build() {
+    return new ItemClickable(this.slot, this.itemStack, this.action);
   }
 }

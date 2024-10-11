@@ -21,28 +21,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package team.emptyte.gui.core.exception;
+package team.emptyte.gui.common.item;
 
-import java.io.Serial;
+import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * An exception that is thrown when an error occurs in a component.
+ * The default item builder.
  *
  * @since 0.0.1
  */
-public class ComponentException extends RuntimeException {
-  @Serial
-  private static final long serialVersionUID = 1L;
+public class DefaultItemBuilder extends ItemBuilderLayout<DefaultItemBuilder> {
+  protected DefaultItemBuilder(final @NotNull Material material, final int amount) {
+    super(material, amount);
+  }
 
-  /**
-   * Constructs a new component exception with the specified detail message.
-   *
-   * @param message the detail message
-   *                (which is saved for later retrieval by the {@link #getMessage()} method)
-   * @since 0.0.1
-   */
-  public ComponentException(final @NotNull String message) {
-    super(message);
+  @Override
+  protected @NotNull DefaultItemBuilder back() {
+    return this;
   }
 }

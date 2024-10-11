@@ -21,28 +21,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package team.emptyte.gui.core.exception;
+package team.emptyte.gui.api.listener;
 
-import java.io.Serial;
+import java.util.function.Predicate;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
+import team.emptyte.gui.api.menu.MenuInventory;
+import team.emptyte.gui.api.menu.MenuInventoryWrapper;
+import team.emptyte.gui.api.util.MenuUtil;
 
-/**
- * An exception that is thrown when an error occurs in a component.
- *
- * @since 0.0.1
- */
-public class ComponentException extends RuntimeException {
-  @Serial
-  private static final long serialVersionUID = 1L;
+public final class InventoryOpenListener implements Listener {
+  @EventHandler
+  public void onOpen(final @NotNull InventoryOpenEvent event) {
+    final Inventory inventory = event.getInventory();
 
-  /**
-   * Constructs a new component exception with the specified detail message.
-   *
-   * @param message the detail message
-   *                (which is saved for later retrieval by the {@link #getMessage()} method)
-   * @since 0.0.1
-   */
-  public ComponentException(final @NotNull String message) {
-    super(message);
+    if (MenuUtil.isCustomMenu(inventory)) {
+      final MenuInventoryWrapper wrapper = MenuUtil.getAsWrapper(inventory);
+      final MenuInventory menuInventory = wrapper.menuInventory();
+      final Predicate<Inventory> openAction = menuInventory.openAction();
+
+      if (openAction != null) {
+        if (openAction.test(inventory)) {
+          event.setCancelled(true);
+        }
+      }
+    }
   }
 }

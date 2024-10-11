@@ -21,28 +21,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package team.emptyte.gui.core.exception;
+package team.emptyte.gui.api.menu;
 
-import java.io.Serial;
+import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * An exception that is thrown when an error occurs in a component.
+ * Represents a menu inventory that can be used in the GUI.
  *
  * @since 0.0.1
  */
-public class ComponentException extends RuntimeException {
-  @Serial
-  private static final long serialVersionUID = 1L;
-
+public interface MenuInventoryWrapper {
   /**
-   * Constructs a new component exception with the specified detail message.
+   * Get the raw inventory.
    *
-   * @param message the detail message
-   *                (which is saved for later retrieval by the {@link #getMessage()} method)
+   * @return the raw {@link Inventory}
    * @since 0.0.1
    */
-  public ComponentException(final @NotNull String message) {
-    super(message);
-  }
+  @NotNull Inventory raw();
+
+  /**
+   * Get the menu inventory.
+   *
+   * @return the {@link MenuInventory}
+   * @since 0.0.1
+   */
+  @NotNull MenuInventory menuInventory();
 }

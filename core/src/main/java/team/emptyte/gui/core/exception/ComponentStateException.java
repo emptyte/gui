@@ -27,22 +27,22 @@ import java.io.Serial;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * An exception that is thrown when an error occurs in a component.
+ * An exception that is thrown when an error occurs in a component state.
  *
  * @since 0.0.1
  */
-public class ComponentException extends RuntimeException {
+public class ComponentStateException extends ComponentException {
   @Serial
   private static final long serialVersionUID = 1L;
 
   /**
-   * Constructs a new component exception with the specified detail message.
+   * Constructs a new component state exception with the specified detail message.
    *
    * @param message the detail message
    *                (which is saved for later retrieval by the {@link #getMessage()} method)
    * @since 0.0.1
    */
-  public ComponentException(final @NotNull String message) {
+  public ComponentStateException(final @NotNull String message) {
     super(message);
   }
 }

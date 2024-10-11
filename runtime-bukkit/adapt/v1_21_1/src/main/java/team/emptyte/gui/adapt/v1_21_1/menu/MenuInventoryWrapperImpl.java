@@ -21,28 +21,49 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package team.emptyte.gui.core.exception;
+package team.emptyte.gui.adapt.v1_21_1.menu;
 
-import java.io.Serial;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.craftbukkit.inventory.CraftInventoryCustom;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
 import org.jetbrains.annotations.NotNull;
+import team.emptyte.gui.api.menu.MenuInventory;
+import team.emptyte.gui.api.menu.MenuInventoryWrapper;
 
 /**
- * An exception that is thrown when an error occurs in a component.
+ * Represents a menu inventory wrapper implementation.
  *
  * @since 0.0.1
  */
-public class ComponentException extends RuntimeException {
-  @Serial
-  private static final long serialVersionUID = 1L;
+public class MenuInventoryWrapperImpl extends CraftInventoryCustom implements MenuInventoryWrapper {
+  private final MenuInventory menuInventory;
 
   /**
-   * Constructs a new component exception with the specified detail message.
+   * Constructs a new menu inventory wrapper implementation.
    *
-   * @param message the detail message
-   *                (which is saved for later retrieval by the {@link #getMessage()} method)
+   * @param inventoryHolder the inventory holder
+   * @param menuInventory   the menu inventory
    * @since 0.0.1
    */
-  public ComponentException(final @NotNull String message) {
-    super(message);
+  public MenuInventoryWrapperImpl(final @NotNull InventoryHolder inventoryHolder, final @NotNull MenuInventory menuInventory) {
+    super(
+      inventoryHolder,
+      menuInventory.size(),
+      menuInventory.title() == null ? Component.empty() : MiniMessage.miniMessage().deserialize(menuInventory.title())
+    );
+
+    this.menuInventory = menuInventory;
+  }
+
+  @Override
+  public @NotNull Inventory raw() {
+    return this;
+  }
+
+  @Override
+  public @NotNull MenuInventory menuInventory() {
+    return this.menuInventory;
   }
 }

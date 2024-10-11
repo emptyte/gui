@@ -21,28 +21,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package team.emptyte.gui.core.exception;
+package team.emptyte.gui.core.item.action;
 
-import java.io.Serial;
+import java.util.function.Predicate;
+import org.bukkit.event.inventory.ClickType;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-/**
- * An exception that is thrown when an error occurs in a component.
- *
- * @since 0.0.1
- */
-public class ComponentException extends RuntimeException {
-  @Serial
-  private static final long serialVersionUID = 1L;
+public interface ItemClickableAction {
+  ItemClickableAction CANCEL_CLICK = new SingleClickableAction(inventory -> true);
 
-  /**
-   * Constructs a new component exception with the specified detail message.
-   *
-   * @param message the detail message
-   *                (which is saved for later retrieval by the {@link #getMessage()} method)
-   * @since 0.0.1
-   */
-  public ComponentException(final @NotNull String message) {
-    super(message);
+  @Nullable Predicate<@NotNull InventoryClickEvent> action(final @NotNull ClickType clickType);
+
+  static @NotNull ItemClickableAction single(final @NotNull Predicate<@NotNull InventoryClickEvent> action) {
+    return new SingleClickableAction(action);
   }
 }

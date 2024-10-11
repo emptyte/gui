@@ -21,28 +21,51 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package team.emptyte.gui.core.exception;
+package team.emptyte.gui.common.item.util;
 
-import java.io.Serial;
+import java.util.HashMap;
+import java.util.Map;
+import org.bukkit.DyeColor;
+import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
+import team.emptyte.gui.common.item.ItemBuilder;
 
 /**
- * An exception that is thrown when an error occurs in a component.
+ * Utility class for dye items.
  *
  * @since 0.0.1
  */
-public class ComponentException extends RuntimeException {
-  @Serial
-  private static final long serialVersionUID = 1L;
+public class DyeItemUtils {
+  private static final Map<DyeColor, String> COLORS_BY_DYE;
+
+  static {
+    COLORS_BY_DYE = new HashMap<>();
+
+    for (DyeColor dyeColor : DyeColor.values()) {
+      COLORS_BY_DYE.put(dyeColor, dyeColor.name());
+    }
+  }
+
+  private DyeItemUtils() {
+    throw new UnsupportedOperationException();
+  }
 
   /**
-   * Constructs a new component exception with the specified detail message.
+   * Creates a new builder for a dye item.
    *
-   * @param message the detail message
-   *                (which is saved for later retrieval by the {@link #getMessage()} method)
+   * @param materialKey the material key
+   * @param dyeColor    the dye color
+   * @param amount      the amount
+   * @return the builder
    * @since 0.0.1
    */
-  public ComponentException(final @NotNull String message) {
-    super(message);
+  public static ItemBuilder createBuilder(@NotNull String materialKey, final @NotNull DyeColor dyeColor, final int amount) {
+    Material material;
+    if (materialKey.equals("STAINED_CLAY")) {
+      materialKey = "TERRACOTTA";
+    }
+    material = Material.valueOf(COLORS_BY_DYE.get(dyeColor) + "_" + materialKey);
+    return ItemBuilder.builder(material, amount);
   }
+
 }

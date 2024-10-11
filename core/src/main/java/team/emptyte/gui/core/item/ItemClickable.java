@@ -21,28 +21,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package team.emptyte.gui.core.exception;
+package team.emptyte.gui.core.item;
 
-import java.io.Serial;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import team.emptyte.gui.core.item.action.ItemClickableAction;
 
-/**
- * An exception that is thrown when an error occurs in a component.
- *
- * @since 0.0.1
- */
-public class ComponentException extends RuntimeException {
-  @Serial
-  private static final long serialVersionUID = 1L;
-
-  /**
-   * Constructs a new component exception with the specified detail message.
-   *
-   * @param message the detail message
-   *                (which is saved for later retrieval by the {@link #getMessage()} method)
-   * @since 0.0.1
-   */
-  public ComponentException(final @NotNull String message) {
-    super(message);
+public record ItemClickable(
+  int slot,
+  @NotNull ItemStack itemStack,
+  @NotNull ItemClickableAction action
+) {
+  public static @NotNull ItemClickableBuilder builder(final int slot) {
+    return new ItemClickableBuilder(slot);
   }
 }
