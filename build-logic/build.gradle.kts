@@ -4,8 +4,9 @@ plugins {
 
 dependencies {
   implementation(libs.build.indra)
-  implementation(libs.build.spotless)
-  //implementation("io.papermc.paperweight:paperweight-userdev:1.7.2")
+  implementation(libs.build.indra.crossdoc)
+  implementation(libs.build.indra.publishing)
+  implementation(libs.build.indra.spotless)
   compileOnly(files(libs::class.java.protectionDomain.codeSource.location))
 }
 

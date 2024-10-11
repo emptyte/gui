@@ -3,7 +3,9 @@ import java.util.*
 
 plugins {
   id("net.kyori.indra")
-  id("com.diffplug.spotless")
+  id("net.kyori.indra.crossdoc")
+  id("net.kyori.indra.checkstyle")
+  id("net.kyori.indra.licenser.spotless")
 }
 
 val libs = extensions.getByType(org.gradle.accessors.dm.LibrariesForLibs::class)
@@ -23,6 +25,7 @@ repositories {
 
 dependencies {
   compileOnly(libs.paper)
+  checkstyle(libs.stylecheck)
 }
 
 spotless {

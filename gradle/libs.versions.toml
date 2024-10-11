@@ -10,6 +10,8 @@ paper = "io.papermc.paper:paper-api:1.21.1-R0.1-SNAPSHOT"
 caffeine = "com.github.ben-manes.caffeine:caffeine:3.1.8"
 
 build-indra = { module = "net.kyori:indra-common", version.ref = "indra" }
-build-spotless = "com.diffplug.spotless:spotless-plugin-gradle:6.22.0"
+build-indra-crossdoc = { module = "net.kyori:indra-crossdoc", version.ref = "indra" }
+build-indra-publishing = { module = "net.kyori:indra-publishing-gradle-plugin", version.ref = "indra" }
+build-indra-spotless = { module = "net.kyori:indra-licenser-spotless", version.ref = "indra" }
 
 stylecheck = "ca.stellardrift:stylecheck:0.2.1"
