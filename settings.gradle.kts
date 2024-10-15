@@ -5,8 +5,7 @@ pluginManagement {
 rootProject.name = "gui"
 
 sequenceOf(
-  "common",
-  "core",
+  "api",
   "runtime-bukkit:api",
   "runtime-bukkit:adapt:v1_21_1",
   "runtime-bukkit:test-plugin"
