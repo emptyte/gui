@@ -7,8 +7,7 @@ rootProject.name = "gui"
 sequenceOf(
   "api",
   "runtime-bukkit:api",
-  "runtime-bukkit:adapt:v1_21_1",
-  "runtime-bukkit:test-plugin"
+  "runtime-bukkit:adapt:v1_21_1"
 ).forEach {
   includePrefixed(it)
 }
