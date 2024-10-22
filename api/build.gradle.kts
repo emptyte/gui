@@ -1,3 +1,3 @@
 plugins {
-  id("gui.common-conventions")
+  id("gui.publishing-conventions")
 }
