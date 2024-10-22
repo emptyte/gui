@@ -1,31 +1,53 @@
+/*
+ * This file is part of storage, licensed under the MIT License
+ *
+ * Copyright (c) 2024 Emptyte Team
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 package team.emptyte.gui;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.jetbrains.annotations.NotNull;
 
-public class Tree {
-  private final List<Component> nodes = new ArrayList<>();
+public class Tree<E> {
+  private final List<Component<E>> nodes = new ArrayList<>();
 
   public Tree() {
   }
 
-  public @NotNull List<@NotNull Component> nodes() {
+  public @NotNull List<@NotNull Component<E>> nodes() {
     return this.nodes;
   }
 
-  public void add(final @NotNull Component node) {
+  public void add(final @NotNull Component<E> node) {
     this.nodes.add(node);
   }
 
-  public void remove(final @NotNull Component node) {
+  public void remove(final @NotNull Component<E> node) {
     this.nodes.remove(node);
   }
 
-  public @NotNull List<Component> descendants() {
-    final List<Component> descendants = new ArrayList<>();
-    for (final Component node : this.nodes) {
+  public @NotNull List<Component<E>> descendants() {
+    final List<Component<E>> descendants = new ArrayList<>();
+    for (final Component<E> node : this.nodes) {
       descendants.add(node);
       descendants.addAll(node.descendants());
     }
