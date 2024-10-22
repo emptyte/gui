@@ -1,7 +1,7 @@
 plugins {
-  id("gui.publishing-conventions")
+  id("gui.runtime-bukkit-conventions")
 }
 
 dependencies {
-  api(project(":${rootProject.name}-core"))
+  api(project(":${rootProject.name}-api"))
 }

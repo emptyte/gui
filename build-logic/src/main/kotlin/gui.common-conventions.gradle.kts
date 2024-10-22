@@ -16,6 +16,7 @@ indra {
     minimumToolchain(21)
     strictVersions(true)
   }
+  checkstyle(libs.versions.checkstyle.get())
 }
 
 repositories {
@@ -24,8 +25,8 @@ repositories {
 }
 
 dependencies {
-  compileOnly(libs.paper)
   checkstyle(libs.stylecheck)
+  compileOnly(libs.annotations)
 }
 
 spotless {
@@ -44,7 +45,21 @@ spotless {
   }
 }
 
+indraCrossdoc {
+  baseUrl().set(providers.gradleProperty("javadocPublishRoot"))
+  nameBasedDocumentationUrlProvider {
+    projectNamePrefix.set("gui-")
+  }
+}
+
+java {
+  withJavadocJar()
+}
+
 tasks {
+  generateOfflineLinks {
+  }
+
   jar {
     manifest {
       attributes(
