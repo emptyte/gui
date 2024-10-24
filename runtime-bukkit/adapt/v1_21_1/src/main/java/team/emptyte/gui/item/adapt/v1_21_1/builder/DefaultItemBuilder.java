@@ -21,23 +21,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package team.emptyte.gui.extractor;
+package team.emptyte.gui.item.adapt.v1_21_1.builder;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
-import team.emptyte.gui.Component;
 
-public final class RenderMethodExtractor {
-  private RenderMethodExtractor() {
-    throw new UnsupportedOperationException("This class cannot be instantiated");
+public class DefaultItemBuilder extends AbstractItemBuilder {
+  protected DefaultItemBuilder(final @NotNull Material material, final int amount) {
+    super(material, amount);
   }
 
-  public static <E> @NotNull List<E> extract(final @NotNull Component<E> component) {
-    final List<E> extracted = new ArrayList<>(component.render());
-    for (final Component<E> descendant : component.descendants()) {
-      extracted.addAll(RenderMethodExtractor.extract(descendant));
-    }
-    return extracted;
+  @Override
+  public @NotNull ItemBuilder back() {
+    return this;
   }
 }
