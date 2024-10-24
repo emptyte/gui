@@ -26,12 +26,13 @@ package team.emptyte.gui;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import team.emptyte.gui.exception.NoSuchStateComponentException;
 
-public abstract class Component<E> extends Tree<E> {
+public abstract class Component<E> extends Tree {
   /**
    * If this parent is null, then this component is a root component.
    */
@@ -71,4 +72,17 @@ public abstract class Component<E> extends Tree<E> {
   }
 
   public abstract @NotNull List<@NotNull E> render();
+
+  @Override
+  public boolean equals(final @Nullable Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null || this.getClass() != obj.getClass()) {
+      return false;
+    }
+
+    final Component<?> component = (Component<?>) obj;
+    return Objects.equals(this.states, component.states);
+  }
 }

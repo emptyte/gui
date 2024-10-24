@@ -23,34 +23,82 @@
  */
 package team.emptyte.gui;
 
-import java.util.ArrayList;
-import java.util.List;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public class Tree<E> {
-  private final List<Component<E>> nodes = new ArrayList<>();
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
 
-  public Tree() {
+public class Tree implements Iterable<Component<?>> {
+  private Component<?>[] children;
+
+  public Tree(final @NotNull Component<?>... children) {
+    this.children = children;
   }
 
-  public @NotNull List<@NotNull Component<E>> nodes() {
-    return this.nodes;
+  public @NotNull Collection<@NotNull Component<?>> children() {
+    return new ArrayList<>(Arrays.asList(this.children));
   }
 
-  public void add(final @NotNull Component<E> node) {
-    this.nodes.add(node);
+  public void add(final @NotNull Component<?> child) {
+    final Component<?>[] newChildren = new Component[this.children.length + 1];
+    System.arraycopy(this.children, 0, newChildren, 0, this.children.length);
+    newChildren[this.children.length] = child;
+    this.children = newChildren;
   }
 
-  public void remove(final @NotNull Component<E> node) {
-    this.nodes.remove(node);
-  }
-
-  public @NotNull List<Component<E>> descendants() {
-    final List<Component<E>> descendants = new ArrayList<>();
-    for (final Component<E> node : this.nodes) {
-      descendants.add(node);
-      descendants.addAll(node.descendants());
+  public void remove(final @NotNull Component<?> child) {
+    final Component<?>[] newChildren = new Component[this.children.length - 1];
+    int index = 0;
+    for (final Component<?> component : this.children) {
+      if (component != child) {
+        newChildren[index++] = component;
+      }
     }
-    return descendants;
+    this.children = newChildren;
+  }
+
+  public void clear() {
+    this.children = new Component[0];
+  }
+
+  public boolean contains(final @NotNull Component<?> child) {
+    for (final Component<?> component : this.children) {
+      if (component == child) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  @Override
+  public boolean equals(final @Nullable Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null || this.getClass() != obj.getClass()) {
+      return false;
+    }
+    final Tree tree = (Tree) obj;
+    return Arrays.equals(this.children, tree.children);
+  }
+
+  @Override
+  public @NotNull Iterator<Component<?>> iterator() {
+    return new Iterator<>() {
+      private int index = 0;
+
+      @Override
+      public boolean hasNext() {
+        return this.index < Tree.this.children.length;
+      }
+
+      @Override
+      public @Nullable Component<?> next() {
+        return Tree.this.children[this.index++];
+      }
+    };
   }
 }
