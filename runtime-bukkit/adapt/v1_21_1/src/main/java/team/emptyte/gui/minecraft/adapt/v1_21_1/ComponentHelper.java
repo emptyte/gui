@@ -21,21 +21,41 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package team.emptyte.gui;
+package team.emptyte.gui.minecraft.adapt.v1_21_1;
 
+import java.util.ArrayList;
 import java.util.List;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
-import team.emptyte.gui.menu.item.MenuItem;
+import org.jetbrains.annotations.Nullable;
 
-public abstract class BukkitComponent extends Component<MenuItem> {
-  public BukkitComponent() {
-    super();
+public final class ComponentHelper {
+  private ComponentHelper() {
   }
 
-  public BukkitComponent(final @NotNull BukkitComponent... children) {
-    super(children);
+  public static @NotNull Component deserialize(final @Nullable String string) {
+    if (string == null || string.isEmpty()) {
+      return Component.empty();
+    }
+
+    final Component component = Component.Serializer
+      .fromJson(GsonComponentSerializer.gson().serialize(MiniMessage.miniMessage().deserialize(string)), RegistryAccess.EMPTY);
+    if (component == null) {
+      return Component.empty();
+    }
+    return component;
   }
 
-  @Override
-  public abstract @NotNull List<@NotNull MenuItem> render();
+  public static @NotNull List<Component> deserialize(final @Nullable List<String> strings) {
+    if (strings == null || strings.isEmpty()) {
+      return new ArrayList<>();
+    }
+
+    return strings.stream()
+      .map(ComponentHelper::deserialize)
+      .toList();
+  }
 }

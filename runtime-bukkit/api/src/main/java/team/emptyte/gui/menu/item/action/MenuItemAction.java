@@ -21,21 +21,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package team.emptyte.gui;
+package team.emptyte.gui.menu.item.action;
 
-import java.util.List;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.jetbrains.annotations.NotNull;
-import team.emptyte.gui.menu.item.MenuItem;
 
-public abstract class BukkitComponent extends Component<MenuItem> {
-  public BukkitComponent() {
-    super();
-  }
-
-  public BukkitComponent(final @NotNull BukkitComponent... children) {
-    super(children);
-  }
-
-  @Override
-  public abstract @NotNull List<@NotNull MenuItem> render();
+@FunctionalInterface
+public interface MenuItemAction {
+  boolean execute(final @NotNull InventoryClickEvent event);
 }

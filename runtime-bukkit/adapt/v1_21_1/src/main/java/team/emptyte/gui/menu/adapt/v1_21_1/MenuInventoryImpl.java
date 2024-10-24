@@ -21,21 +21,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package team.emptyte.gui;
+package team.emptyte.gui.menu.adapt.v1_21_1;
 
-import java.util.List;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.craftbukkit.inventory.CraftInventoryCustom;
 import org.jetbrains.annotations.NotNull;
+import team.emptyte.gui.menu.Menu;
+import team.emptyte.gui.menu.adapt.MenuInventory;
 import team.emptyte.gui.menu.item.MenuItem;
 
-public abstract class BukkitComponent extends Component<MenuItem> {
-  public BukkitComponent() {
-    super();
-  }
+public class MenuInventoryImpl extends CraftInventoryCustom implements MenuInventory {
+  private final Menu menu;
 
-  public BukkitComponent(final @NotNull BukkitComponent... children) {
-    super(children);
+  public MenuInventoryImpl(final @NotNull Menu menu) {
+    super(null, menu.size(), MiniMessage.miniMessage().deserialize(menu.title()));
+
+    for (final MenuItem item : menu.items()) {
+      this.setItem(item.slot(), item.item());
+    }
+
+    this.menu = menu;
   }
 
   @Override
-  public abstract @NotNull List<@NotNull MenuItem> render();
+  public @NotNull Menu menu() {
+    return this.menu;
+  }
 }

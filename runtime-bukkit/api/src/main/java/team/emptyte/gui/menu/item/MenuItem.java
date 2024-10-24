@@ -21,21 +21,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package team.emptyte.gui;
+package team.emptyte.gui.menu.item;
 
-import java.util.List;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import team.emptyte.gui.menu.item.MenuItem;
+import team.emptyte.gui.menu.item.action.MenuItemAction;
 
-public abstract class BukkitComponent extends Component<MenuItem> {
-  public BukkitComponent() {
-    super();
+public record MenuItem(
+  int slot,
+  @NotNull ItemStack item,
+  @NotNull MenuItemAction action
+) {
+  public MenuItem {
+    if (slot < 0) {
+      throw new IllegalArgumentException("Slot cannot be negative");
+    }
   }
 
-  public BukkitComponent(final @NotNull BukkitComponent... children) {
-    super(children);
+  public MenuItem(
+    final int slot,
+    final @NotNull ItemStack item
+  ) {
+    this(slot, item, event -> true);
   }
-
-  @Override
-  public abstract @NotNull List<@NotNull MenuItem> render();
 }
