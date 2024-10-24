@@ -12,5 +12,5 @@ tasks {
 dependencies {
   paperweight.paperDevBundle("1.21.1-R0.1-SNAPSHOT")
 
-  api(project(":${rootProject.name}-runtime-bukkit-api"))
+  implementation(project(":${rootProject.name}-runtime-bukkit-api"))
 }
