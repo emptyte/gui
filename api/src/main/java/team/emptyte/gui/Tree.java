@@ -23,13 +23,10 @@
  */
 package team.emptyte.gui;
 
+import java.util.*;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
 
 public class Tree implements Iterable<Component<?>> {
   private Component<?>[] children;
@@ -71,6 +68,11 @@ public class Tree implements Iterable<Component<?>> {
       }
     }
     return false;
+  }
+
+  @Override
+  public int hashCode() {
+    return Arrays.hashCode(this.children);
   }
 
   @Override
