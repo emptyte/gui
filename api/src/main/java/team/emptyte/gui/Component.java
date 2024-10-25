@@ -23,14 +23,11 @@
  */
 package team.emptyte.gui;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import team.emptyte.gui.exception.NoSuchStateComponentException;
+
+import java.util.*;
 
 public abstract class Component<E> extends Tree {
   /**
@@ -69,6 +66,24 @@ public abstract class Component<E> extends Tree {
       throw new NoSuchStateComponentException("No state found");
     }
     return this.states.get(key);
+  }
+
+  public @NotNull Collection<@NotNull Component<?>> descendents() {
+    if (this.children().isEmpty()) {
+      return Collections.emptyList();
+    }
+
+    final Collection<Component<?>> components = new LinkedList<>();
+    final Queue<Component<?>> queue = new LinkedList<>();
+    queue.add(this);
+
+    while (!queue.isEmpty()) {
+      final Component<?> current = queue.poll();
+      components.add(current);
+      queue.addAll(current.children());
+    }
+
+    return components;
   }
 
   public abstract @NotNull List<@NotNull E> render();
