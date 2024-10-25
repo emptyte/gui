@@ -21,34 +21,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package team.emptyte.gui.menu;
+package team.emptyte.gui;
 
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginManager;
+import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 import team.emptyte.gui.adapt.AdaptionModule;
-import team.emptyte.gui.adapt.AdaptionModuloFactory;
-import team.emptyte.gui.event.listener.InventoryClickListener;
+import team.emptyte.gui.menu.Menu;
+import team.emptyte.gui.menu.adapt.v1_21_1.MenuInventoryImpl;
 
-public final class MenuManager {
-  private final AdaptionModule adaptionModule;
-
-  public MenuManager(final @NotNull Plugin plugin) {
-    this.adaptionModule = AdaptionModuloFactory.create();
-
-    final PluginManager pluginManager = plugin.getServer().getPluginManager();
-    pluginManager.registerEvents(new InventoryClickListener(), plugin);
-  }
-
-  /**
-   * Open the inventory for the player with the menu.
-   *
-   * @param player the player to open the inventory for
-   * @param menu   the menu to open
-   * @since 0.2.0
-   */
-  public void openInventory(final @NotNull Player player, final @NotNull Menu menu) {
-    player.openInventory(this.adaptionModule.createInventory(menu));
+public final class AdaptionModule1_21_1 implements AdaptionModule {
+  @Override
+  public @NotNull Inventory createInventory(final @NotNull Menu menu) {
+    return new MenuInventoryImpl(menu);
   }
 }

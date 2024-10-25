@@ -21,11 +21,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package team.emptyte.gui.menu.adapt;
+package team.emptyte.gui.adapt;
 
+import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 import team.emptyte.gui.menu.Menu;
 
-public interface MenuInventory {
-  @NotNull Menu menu();
+public interface AdaptionModule {
+  @NotNull Inventory createInventory(final @NotNull Menu menu);
 }

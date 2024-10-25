@@ -21,34 +21,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package team.emptyte.gui.menu;
+package team.emptyte.gui.adapt;
 
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
-import team.emptyte.gui.adapt.AdaptionModule;
-import team.emptyte.gui.adapt.AdaptionModuloFactory;
-import team.emptyte.gui.event.listener.InventoryClickListener;
 
-public final class MenuManager {
-  private final AdaptionModule adaptionModule;
-
-  public MenuManager(final @NotNull Plugin plugin) {
-    this.adaptionModule = AdaptionModuloFactory.create();
-
-    final PluginManager pluginManager = plugin.getServer().getPluginManager();
-    pluginManager.registerEvents(new InventoryClickListener(), plugin);
+public final class AdaptionModuloFactory {
+  private AdaptionModuloFactory() {
+    throw new UnsupportedOperationException("This class cannot be instantiated");
   }
 
-  /**
-   * Open the inventory for the player with the menu.
-   *
-   * @param player the player to open the inventory for
-   * @param menu   the menu to open
-   * @since 0.2.0
-   */
-  public void openInventory(final @NotNull Player player, final @NotNull Menu menu) {
-    player.openInventory(this.adaptionModule.createInventory(menu));
+  public static @NotNull AdaptionModule create() {
+    final String className = "team.emptyte.gui.AdaptionModule" + ServerVersion.CURRENT;
+    try {
+      final Class<?> clazz = Class.forName(className);
+      final Object module = clazz.getConstructor().newInstance();
+      if (!(module instanceof AdaptionModule)) {
+        throw new IllegalStateException("Invalid adaption module: '"
+          + className + "'. It doesn't implement " + AdaptionModule.class);
+      }
+      return (AdaptionModule) module;
+    } catch (final ClassNotFoundException e) {
+      throw new IllegalStateException("Adaption module not found: '" + className + '.');
+    } catch (final ReflectiveOperationException e) {
+      throw new IllegalStateException("Failed to instantiate adaption module", e);
+    }
   }
 }

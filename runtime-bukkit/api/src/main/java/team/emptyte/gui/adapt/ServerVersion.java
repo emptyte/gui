@@ -21,34 +21,35 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package team.emptyte.gui.menu;
+package team.emptyte.gui.adapt;
 
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginManager;
+import java.util.regex.Pattern;
+import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
-import team.emptyte.gui.adapt.AdaptionModule;
-import team.emptyte.gui.adapt.AdaptionModuloFactory;
-import team.emptyte.gui.event.listener.InventoryClickListener;
 
-public final class MenuManager {
-  private final AdaptionModule adaptionModule;
+public record ServerVersion(int major, int minor, int releases) {
+  public static final ServerVersion CURRENT = ServerVersion.getVersionOfString(Bukkit.getMinecraftVersion());
 
-  public MenuManager(final @NotNull Plugin plugin) {
-    this.adaptionModule = AdaptionModuloFactory.create();
+  @Override
+  public @NotNull String toString() {
+    if (this.releases == -1) {
+      return this.major + "_" + this.minor;
+    }
 
-    final PluginManager pluginManager = plugin.getServer().getPluginManager();
-    pluginManager.registerEvents(new InventoryClickListener(), plugin);
+    return this.major + "_" + this.minor + "_" + this.releases;
   }
 
-  /**
-   * Open the inventory for the player with the menu.
-   *
-   * @param player the player to open the inventory for
-   * @param menu   the menu to open
-   * @since 0.2.0
-   */
-  public void openInventory(final @NotNull Player player, final @NotNull Menu menu) {
-    player.openInventory(this.adaptionModule.createInventory(menu));
+  private static @NotNull ServerVersion getVersionOfString(final @NotNull String version) {
+    final String[] parts = version.split(Pattern.quote("."));
+
+    if (parts.length != 2 && parts.length != 3) {
+      throw new IllegalStateException("Failed to determine minecraft version!");
+    }
+
+    return new ServerVersion(
+      Integer.parseInt(parts[0]),
+      Integer.parseInt(parts[1]),
+      parts.length == 3 ? Integer.parseInt(parts[2]) : -1
+    );
   }
 }

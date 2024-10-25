@@ -21,34 +21,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package team.emptyte.gui.menu;
+package team.emptyte.gui.adapt.menu;
 
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginManager;
+import java.util.Collection;
 import org.jetbrains.annotations.NotNull;
-import team.emptyte.gui.adapt.AdaptionModule;
-import team.emptyte.gui.adapt.AdaptionModuloFactory;
-import team.emptyte.gui.event.listener.InventoryClickListener;
+import org.jetbrains.annotations.Nullable;
+import team.emptyte.gui.BukkitComponent;
+import team.emptyte.gui.menu.Menu;
 
-public final class MenuManager {
-  private final AdaptionModule adaptionModule;
-
-  public MenuManager(final @NotNull Plugin plugin) {
-    this.adaptionModule = AdaptionModuloFactory.create();
-
-    final PluginManager pluginManager = plugin.getServer().getPluginManager();
-    pluginManager.registerEvents(new InventoryClickListener(), plugin);
-  }
+public interface MenuInventory {
+  @NotNull Menu menu();
 
   /**
-   * Open the inventory for the player with the menu.
+   * Finds a component by the slot.
    *
-   * @param player the player to open the inventory for
-   * @param menu   the menu to open
+   * @param slot the slot to find the component by
+   * @return the component found
    * @since 0.2.0
    */
-  public void openInventory(final @NotNull Player player, final @NotNull Menu menu) {
-    player.openInventory(this.adaptionModule.createInventory(menu));
-  }
+  @Nullable BukkitComponent findBySlot(final int slot);
+
+  /**
+   * Compares the current component to the given component.
+   *
+   * @param bukkitComponent the component to compare to
+   * @return the collection of components that are different
+   * @since 0.2.0
+   */
+  @NotNull Collection<@NotNull BukkitComponent> compareTo(final @NotNull BukkitComponent bukkitComponent);
 }
