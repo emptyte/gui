@@ -70,6 +70,14 @@ public class Tree implements Iterable<Component<?>> {
     return false;
   }
 
+  public int size() {
+    return this.children.length;
+  }
+
+  public boolean isEmpty() {
+    return this.children.length == 0;
+  }
+
   @Override
   public int hashCode() {
     return Arrays.hashCode(this.children);
