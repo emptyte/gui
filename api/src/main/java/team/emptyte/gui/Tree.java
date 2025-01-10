@@ -31,12 +31,24 @@ import org.jetbrains.annotations.Nullable;
 public class Tree implements Iterable<Component<?>> {
   private Component<?>[] children;
 
-  public Tree(final @NotNull Component<?>... children) {
+  protected Tree(final @NotNull Component<?>... children) {
     this.children = children;
   }
 
   public @NotNull Collection<@NotNull Component<?>> children() {
     return new ArrayList<>(Arrays.asList(this.children));
+  }
+
+  public @NotNull Collection<@NotNull Component<?>> descendents() {
+    if (this.children == null || this.children.length == 0) {
+      return Collections.emptyList();
+    }
+    final List<Component<?>> descendants = new ArrayList<>();
+    for (final Component<?> child : this.children) {
+      descendants.add(child);
+      descendants.addAll(child.descendents());
+    }
+    return descendants;
   }
 
   public void add(final @NotNull Component<?> child) {

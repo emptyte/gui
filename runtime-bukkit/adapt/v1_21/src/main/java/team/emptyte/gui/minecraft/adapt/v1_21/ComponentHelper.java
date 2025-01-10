@@ -21,24 +21,41 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package team.emptyte.gui.menu.item;
+package team.emptyte.gui.minecraft.adapt.v1_21;
 
-import org.bukkit.inventory.ItemStack;
+import java.util.ArrayList;
+import java.util.List;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
-import team.emptyte.gui.menu.item.action.MenuItemAction;
+import org.jetbrains.annotations.Nullable;
 
-public record MenuItem(
-  int slot,
-  @NotNull ItemStack item,
-  @NotNull MenuItemAction action
-) {
-  public MenuItem {
-    if (slot < 0) {
-      throw new IllegalArgumentException("Slot cannot be negative");
-    }
+public final class ComponentHelper {
+  private ComponentHelper() {
   }
 
-  public static @NotNull MenuItemBuilder builder(final int slot) {
-    return new MenuItemBuilder(slot);
+  public static @NotNull Component deserialize(final @Nullable String string) {
+    if (string == null || string.isEmpty()) {
+      return Component.empty();
+    }
+
+    final Component component = Component.Serializer
+      .fromJson(GsonComponentSerializer.gson().serialize(MiniMessage.miniMessage().deserialize(string)), RegistryAccess.EMPTY);
+    if (component == null) {
+      return Component.empty();
+    }
+    return component;
+  }
+
+  public static @NotNull List<Component> deserialize(final @Nullable List<String> strings) {
+    if (strings == null || strings.isEmpty()) {
+      return new ArrayList<>();
+    }
+
+    return strings.stream()
+      .map(ComponentHelper::deserialize)
+      .toList();
   }
 }

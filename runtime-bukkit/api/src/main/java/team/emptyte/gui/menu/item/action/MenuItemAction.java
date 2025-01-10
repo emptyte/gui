@@ -28,5 +28,7 @@ import org.jetbrains.annotations.NotNull;
 
 @FunctionalInterface
 public interface MenuItemAction {
+  MenuItemAction CALL_BACK = event -> true;
+
   boolean execute(final @NotNull InventoryClickEvent event);
 }

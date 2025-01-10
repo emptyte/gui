@@ -21,24 +21,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package team.emptyte.gui.menu.item;
+package team.emptyte.gui;
 
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
-import team.emptyte.gui.menu.item.action.MenuItemAction;
+import team.emptyte.gui.adapt.AdaptionModule;
+import team.emptyte.gui.menu.adapt.v1_21.MenuInventoryImpl;
 
-public record MenuItem(
-  int slot,
-  @NotNull ItemStack item,
-  @NotNull MenuItemAction action
-) {
-  public MenuItem {
-    if (slot < 0) {
-      throw new IllegalArgumentException("Slot cannot be negative");
-    }
-  }
-
-  public static @NotNull MenuItemBuilder builder(final int slot) {
-    return new MenuItemBuilder(slot);
+public final class AdaptionModule1_21_1 implements AdaptionModule {
+  @Override
+  public @NotNull Inventory createInventory(final @NotNull BukkitComponent root, final @NotNull String title, final int size, final boolean canIntroduceItems) {
+    return new MenuInventoryImpl(root, title, size, canIntroduceItems);
   }
 }

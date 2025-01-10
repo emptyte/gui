@@ -30,6 +30,8 @@ import team.emptyte.gui.exception.NoSuchStateComponentException;
 import java.util.*;
 
 public abstract class Component<E> extends Tree {
+  private final String id;
+
   /**
    * If this parent is null, then this component is a root component.
    */
@@ -38,55 +40,74 @@ public abstract class Component<E> extends Tree {
   private Map<String, Object> states;
 
   @SafeVarargs
-  public Component(final @NotNull Component<E>... children) {
+  protected Component(final @NotNull Component<E>... children) {
     for (final Component<E> child : children) {
       child.parent = this;
       super.add(child);
     }
 
     this.states = null;
+
+    if (this.parent != null) {
+      this.id = this.getClass().getSimpleName() + "@" + this.parent.getClass().getSimpleName() + "-" + this.depth();
+    } else {
+      this.id = this.getClass().getSimpleName() + "-0";
+    }
   }
 
-  public void useState(final @NotNull String key, final @Nullable Object value) {
+  public @NotNull String id() {
+    return this.id;
+  }
+
+  public @Nullable Component<E> parent() {
+    return this.parent;
+  }
+
+  public int depth() {
+    int depth = 0;
+    Component<E> current = this;
+    while (current.parent != null) {
+      depth++;
+      current = current.parent;
+    }
+    return depth;
+  }
+
+  protected void useState(final @NotNull String key, final @Nullable Object value) {
     if (this.states == null) {
       this.states = new HashMap<>();
     }
     this.states.put(key, value);
   }
 
-  public void setState(final @NotNull String key, final @Nullable Object value) {
+  protected void setState(final @NotNull String key, final @Nullable Object value) {
     if (this.states == null || !this.states.containsKey(key)) {
       throw new NoSuchStateComponentException("State not found");
     }
     this.states.put(key, value);
   }
 
-  public @Nullable Object state(final @NotNull String key) {
+  protected @Nullable Object state(final @NotNull String key) {
     if (this.states == null || this.states.isEmpty()) {
       throw new NoSuchStateComponentException("No state found");
     }
     return this.states.get(key);
   }
 
-  public @NotNull Collection<@NotNull Component<?>> descendents() {
-    if (this.children().isEmpty()) {
-      return Collections.emptyList();
-    }
+  public abstract @NotNull List<@NotNull E> render();
 
-    final Collection<Component<?>> components = new LinkedList<>();
-    final Queue<Component<?>> queue = new LinkedList<>();
-    queue.add(this);
-
-    while (!queue.isEmpty()) {
-      final Component<?> current = queue.poll();
-      components.add(current);
-      queue.addAll(current.children());
-    }
-
-    return components;
+  @Override
+  public @NotNull String toString() {
+    return "Component{" +
+      "parent=" + this.parent +
+      "states=" + this.states +
+      '}';
   }
 
-  public abstract @NotNull List<@NotNull E> render();
+  @Override
+  public int hashCode() {
+    return this.states.hashCode();
+  }
 
   @Override
   public boolean equals(final @Nullable Object obj) {

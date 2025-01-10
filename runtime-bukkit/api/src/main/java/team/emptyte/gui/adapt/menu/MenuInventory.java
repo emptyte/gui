@@ -23,30 +23,14 @@
  */
 package team.emptyte.gui.adapt.menu;
 
-import java.util.Collection;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import team.emptyte.gui.BukkitComponent;
-import team.emptyte.gui.menu.Menu;
 
 public interface MenuInventory {
-  @NotNull Menu menu();
+  boolean canIntroduceItems();
 
-  /**
-   * Finds a component by the slot.
-   *
-   * @param slot the slot to find the component by
-   * @return the component found
-   * @since 0.2.0
-   */
   @Nullable BukkitComponent findBySlot(final int slot);
 
-  /**
-   * Compares the current component to the given component.
-   *
-   * @param bukkitComponent the component to compare to
-   * @return the collection of components that are different
-   * @since 0.2.0
-   */
-  @NotNull Collection<@NotNull BukkitComponent> compareTo(final @NotNull BukkitComponent bukkitComponent);
+  void reconcile(final @NotNull BukkitComponent current);
 }

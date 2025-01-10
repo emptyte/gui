@@ -23,16 +23,17 @@
  */
 package team.emptyte.gui.event.listener;
 
-import java.util.Collection;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.jetbrains.annotations.NotNull;
 import team.emptyte.gui.BukkitComponent;
 import team.emptyte.gui.adapt.menu.MenuInventory;
-import team.emptyte.gui.menu.Menu;
+import team.emptyte.gui.menu.item.MenuItem;
+import team.emptyte.gui.menu.item.action.MenuItemAction;
 
 public final class InventoryClickListener implements Listener {
+
   @EventHandler
   public void onMenuClick(final @NotNull InventoryClickEvent event) {
     final int clickedSlot = event.getSlot();
@@ -41,38 +42,35 @@ public final class InventoryClickListener implements Listener {
     }
     final var inventory = event.getInventory();
     if (inventory instanceof MenuInventory menuInventory) {
-      final Menu menu = menuInventory.menu();
-      if (event.getRawSlot() != clickedSlot && !menu.canIntroduceItems()) {
+      final boolean canIntroduceItems = menuInventory.canIntroduceItems();
+      if (event.getRawSlot() != clickedSlot && !canIntroduceItems) {
         event.setCancelled(true);
         return;
       }
-
       final BukkitComponent bukkitComponent = menuInventory.findBySlot(clickedSlot);
       if (bukkitComponent == null) {
         return;
       }
-      for (final var item : bukkitComponent.render()) {
-        if (item.slot() != clickedSlot) {
-          continue;
+      MenuItem menuItem = null;
+      for (final MenuItem item : bukkitComponent.render()) {
+        final int slot = item.slot();
+        if (slot == clickedSlot) {
+          menuItem = item;
+          break;
         }
-        if (item.action().execute(event)) {
-          event.setCancelled(true);
-        }
-        break;
       }
-
-      // If not found modified component, no need to update the inventory
-      final Collection<BukkitComponent> modifiedComponent = menuInventory.compareTo(bukkitComponent);
-      if (modifiedComponent.isEmpty()) {
+      if (menuItem == null) {
         return;
       }
-      for (final BukkitComponent component : modifiedComponent) {
-        for (final var item : component.render()) {
-          inventory.setItem(item.slot(), item.item());
-        }
+      final MenuItemAction action = menuItem.action();
+      if (action.execute(event)) {
+        event.setCancelled(true);
+      } else {
+        event.setCancelled(!canIntroduceItems);
       }
 
-      event.setCancelled(!menu.canIntroduceItems());
+      // Reconcile the slot after the action has been executed
+      menuInventory.reconcile(bukkitComponent);
     }
   }
 }

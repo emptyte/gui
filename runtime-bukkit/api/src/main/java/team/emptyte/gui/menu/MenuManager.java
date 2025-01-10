@@ -24,11 +24,14 @@
 package team.emptyte.gui.menu;
 
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
+import team.emptyte.gui.BukkitComponent;
 import team.emptyte.gui.adapt.AdaptionModule;
 import team.emptyte.gui.adapt.AdaptionModuloFactory;
+import team.emptyte.gui.annotated.Application;
 import team.emptyte.gui.event.listener.InventoryClickListener;
 
 public final class MenuManager {
@@ -41,14 +44,19 @@ public final class MenuManager {
     pluginManager.registerEvents(new InventoryClickListener(), plugin);
   }
 
-  /**
-   * Open the inventory for the player with the menu.
-   *
-   * @param player the player to open the inventory for
-   * @param menu   the menu to open
-   * @since 0.2.0
-   */
-  public void openInventory(final @NotNull Player player, final @NotNull Menu menu) {
-    player.openInventory(this.adaptionModule.createInventory(menu));
+  private @NotNull Inventory inventoryOf(final @NotNull BukkitComponent root) {
+    final Class<? extends BukkitComponent> componentClass = root.getClass();
+    final Application application = componentClass.getAnnotation(Application.class);
+    if (application == null) {
+      throw new IllegalStateException("Component class must be annotated with @Application");
+    }
+    final String title = application.title();
+    final int size = application.size();
+    final boolean canIntroduceItems = application.canIntroduceItems();
+    return this.adaptionModule.createInventory(root, title, size, canIntroduceItems);
+  }
+
+  public void openInventory(final @NotNull Player player, final @NotNull BukkitComponent root) {
+    player.openInventory(this.inventoryOf(root));
   }
 }
