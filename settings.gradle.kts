@@ -6,10 +6,15 @@ rootProject.name = "gui"
 
 sequenceOf(
   "api",
-  "runtime-bukkit:api",
-  "runtime-bukkit:adapt:v1_21_1"
+  "runtime-bukkit:api"
 ).forEach {
   includePrefixed(it)
+}
+
+sequenceOf(
+  "1_21"
+).forEach {
+  includePrefixed("runtime-bukkit:adapt:v$it")
 }
 
 fun includePrefixed(name: String) {
