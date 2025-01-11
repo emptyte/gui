@@ -1,7 +1,7 @@
 /*
  * This file is part of storage, licensed under the MIT License
  *
- * Copyright (c) 2024 Emptyte Team
+ * Copyright (c) 2025 Emptyte Team
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,21 +23,17 @@
  */
 package team.emptyte.gui.item.builder.adapt.v1_21;
 
-import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import java.util.List;
+import java.util.Map;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.StringTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.component.CustomModelData;
 import net.minecraft.world.item.component.ItemLore;
-import net.minecraft.world.item.component.Unbreakable;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.enchantments.CraftEnchantment;
@@ -46,9 +42,6 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import team.emptyte.gui.adapt.item.builder.AbstractItemBuilder;
 import team.emptyte.gui.minecraft.adapt.v1_21.ComponentHelper;
-
-import java.util.List;
-import java.util.Map;
 
 public final class DefaultItemBuilder extends AbstractItemBuilder {
   public DefaultItemBuilder(final @NotNull Material material, final int amount) {

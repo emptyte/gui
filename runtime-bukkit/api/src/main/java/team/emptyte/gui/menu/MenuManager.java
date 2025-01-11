@@ -1,7 +1,7 @@
 /*
  * This file is part of storage, licensed under the MIT License
  *
- * Copyright (c) 2024 Emptyte Team
+ * Copyright (c) 2025 Emptyte Team
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -58,5 +58,17 @@ public final class MenuManager {
 
   public void openInventory(final @NotNull Player player, final @NotNull BukkitComponent root) {
     player.openInventory(this.inventoryOf(root));
+  }
+
+  public void openInventory(final @NotNull Player player, final @NotNull BukkitComponent root, final @NotNull String title) {
+    player.openInventory(this.adaptionModule.createInventory(root, title, 9, false));
+  }
+
+  public void openInventory(final @NotNull Player player, final @NotNull BukkitComponent root, final @NotNull String title, final int size) {
+    player.openInventory(this.adaptionModule.createInventory(root, title, size, false));
+  }
+
+  public void openInventory(final @NotNull Player player, final @NotNull BukkitComponent root, final @NotNull String title, final int size, final boolean canIntroduceItems) {
+    player.openInventory(this.adaptionModule.createInventory(root, title, size, canIntroduceItems));
   }
 }

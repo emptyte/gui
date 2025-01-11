@@ -1,7 +1,7 @@
 /*
  * This file is part of storage, licensed under the MIT License
  *
- * Copyright (c) 2024 Emptyte Team
+ * Copyright (c) 2025 Emptyte Team
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,14 +23,13 @@
  */
 package team.emptyte.gui.adapt.item.builder;
 
+import java.util.List;
+import java.util.Map;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import team.emptyte.gui.util.ServerVersion;
-
-import java.util.List;
-import java.util.Map;
 
 public interface ItemBuilder {
   static @NotNull ItemBuilder builder(final @NotNull Material material) {
@@ -38,7 +37,7 @@ public interface ItemBuilder {
   }
 
   static @NotNull ItemBuilder builder(final @NotNull Material material, final int amount) {
-    final String className = ItemBuilder.class.getPackageName() + ".adapt.v" + ServerVersion.CURRENT + ".DefaultItemBuilder";
+    final String className = "team.emptyte.gui.item.builder.adapt.v" + ServerVersion.CURRENT + ".DefaultItemBuilder";
     try {
       final Class<?> clazz = Class.forName(className);
       final Object module = clazz.getConstructor(Material.class, int.class)

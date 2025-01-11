@@ -1,7 +1,7 @@
 /*
  * This file is part of storage, licensed under the MIT License
  *
- * Copyright (c) 2024 Emptyte Team
+ * Copyright (c) 2025 Emptyte Team
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,7 @@
  */
 package team.emptyte.gui.menu.adapt.v1_21;
 
+import java.util.List;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.craftbukkit.inventory.CraftInventoryCustom;
 import org.jetbrains.annotations.NotNull;
@@ -32,8 +33,6 @@ import team.emptyte.gui.Component;
 import team.emptyte.gui.adapt.menu.MenuInventory;
 import team.emptyte.gui.menu.item.MenuItem;
 import team.emptyte.gui.util.TreeHelper;
-
-import java.util.List;
 
 public class MenuInventoryImpl extends CraftInventoryCustom implements MenuInventory {
   private final boolean canIntroduceItems;

@@ -1,7 +1,7 @@
 /*
  * This file is part of storage, licensed under the MIT License
  *
- * Copyright (c) 2024 Emptyte Team
+ * Copyright (c) 2025 Emptyte Team
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,7 +28,7 @@ import org.jetbrains.annotations.NotNull;
 import team.emptyte.gui.adapt.AdaptionModule;
 import team.emptyte.gui.menu.adapt.v1_21.MenuInventoryImpl;
 
-public final class AdaptionModule1_21_1 implements AdaptionModule {
+public final class AdaptionModule1_21 implements AdaptionModule {
   @Override
   public @NotNull Inventory createInventory(final @NotNull BukkitComponent root, final @NotNull String title, final int size, final boolean canIntroduceItems) {
     return new MenuInventoryImpl(root, title, size, canIntroduceItems);
