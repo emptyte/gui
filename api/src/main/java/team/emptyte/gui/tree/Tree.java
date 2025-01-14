@@ -21,11 +21,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package team.emptyte.gui;
+package team.emptyte.gui.tree;
 
 import java.util.*;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import team.emptyte.gui.Component;
 
 public class Tree implements Iterable<Component<?>> {
   private Component<?>[] children;
@@ -55,6 +57,18 @@ public class Tree implements Iterable<Component<?>> {
     System.arraycopy(this.children, 0, newChildren, 0, this.children.length);
     newChildren[this.children.length] = child;
     this.children = newChildren;
+  }
+
+  public void addAll(final @NotNull Component<?>... children) {
+    for (final Component<?> child : children) {
+      this.add(child);
+    }
+  }
+
+  public void addAll(final @NotNull Collection<@NotNull Component<?>> children) {
+    for (final Component<?> child : children) {
+      this.add(child);
+    }
   }
 
   public void remove(final @NotNull Component<?> child) {
