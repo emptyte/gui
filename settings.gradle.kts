@@ -4,14 +4,19 @@ pluginManagement {
 
 rootProject.name = "gui"
 
+includePrefixed("api")
+
 sequenceOf(
   "api",
-  "runtime-bukkit:api"
+  "test-plugin"
 ).forEach {
-  includePrefixed(it)
+  includePrefixed("runtime-bukkit:$it")
 }
 
 sequenceOf(
+  "1_20_2",
+  "1_20_4",
+  "1_20_6",
   "1_21"
 ).forEach {
   includePrefixed("runtime-bukkit:adapt:v$it")
