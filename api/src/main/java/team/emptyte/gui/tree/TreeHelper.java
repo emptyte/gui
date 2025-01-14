@@ -21,10 +21,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package team.emptyte.gui.util;
+package team.emptyte.gui.tree;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import org.jetbrains.annotations.NotNull;
 import team.emptyte.gui.Component;
 
@@ -33,9 +35,16 @@ public final class TreeHelper {
     throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
   }
 
+  private static void collectFlattened(@NotNull List<Component<?>> list, @NotNull Component<?> component) {
+    list.add(component);
+    for (final Component<?> child : component.descendents()) {
+      collectFlattened(list, child);
+    }
+  }
+
   public static @NotNull List<@NotNull Component<?>> flatten(final @NotNull Component<?> root) {
-    final List<Component<?>> components = new ArrayList<>(root.descendents());
-    components.add(root);
+    final List<Component<?>> components = new ArrayList<>();
+    collectFlattened(components, root);
     return components;
   }
 
@@ -49,19 +58,15 @@ public final class TreeHelper {
     return components;
   }
 
-  public static @NotNull List<@NotNull Component<?>> diff(final @NotNull Component<?> before, final @NotNull Component<?> after) {
-    final List<Component<?>> diff = new ArrayList<>();
-    for (final Component<?> component : before) {
-      if (!after.contains(component)) {
-        diff.add(component);
+  public static @NotNull List<@NotNull Component<?>> diff(final @NotNull Component<?> base, final @NotNull Component<?> dirty) {
+    final List<Component<?>> differences = new ArrayList<>();
+    final Set<Component<?>> baseSet  = new HashSet<>(flatten(base));
+    for (final Component<?> component : flatten(dirty)) {
+      if (!baseSet.contains(component)) {
+        differences.add(component);
       }
     }
-    for (final Component<?> component : before.descendents()) {
-      if (!after.descendents().contains(component)) {
-        diff.add(component);
-      }
-    }
-    return diff;
+    return differences;
   }
 
   public static <T extends Component<?>> @NotNull List<@NotNull T> diff(final @NotNull Component<?> before, final @NotNull Component<?> after, final @NotNull Class<T> type) {
