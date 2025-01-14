@@ -27,8 +27,9 @@ import java.util.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import team.emptyte.gui.exception.NoSuchStateComponentException;
+import team.emptyte.gui.tree.Tree;
 
-public abstract class Component<E> extends Tree {
+public abstract class Component<E> extends Tree implements Cloneable {
   private final String id;
 
   /**
@@ -36,7 +37,7 @@ public abstract class Component<E> extends Tree {
    */
   protected Component<E> parent = null;
 
-  private Map<String, Object> states;
+  private Map<String, Object> states = new HashMap<>();
 
   @SafeVarargs
   protected Component(final @NotNull Component<E>... children) {
@@ -44,8 +45,6 @@ public abstract class Component<E> extends Tree {
       child.parent = this;
       super.add(child);
     }
-
-    this.states = null;
 
     if (this.parent != null) {
       this.id = this.getClass().getSimpleName() + "@" + this.parent.getClass().getSimpleName() + "-" + this.depth();
@@ -73,21 +72,18 @@ public abstract class Component<E> extends Tree {
   }
 
   protected void useState(final @NotNull String key, final @Nullable Object value) {
-    if (this.states == null) {
-      this.states = new HashMap<>();
-    }
     this.states.put(key, value);
   }
 
   protected void setState(final @NotNull String key, final @Nullable Object value) {
-    if (this.states == null || !this.states.containsKey(key)) {
+    if (!this.states.containsKey(key)) {
       throw new NoSuchStateComponentException("State not found");
     }
     this.states.put(key, value);
   }
 
   protected @Nullable Object state(final @NotNull String key) {
-    if (this.states == null || this.states.isEmpty()) {
+    if (this.states.isEmpty()) {
       throw new NoSuchStateComponentException("No state found");
     }
     return this.states.get(key);
@@ -96,16 +92,38 @@ public abstract class Component<E> extends Tree {
   public abstract @NotNull List<@NotNull E> render();
 
   @Override
+  public @NotNull Component<E> clone() {
+    try {
+      @SuppressWarnings("unchecked")
+      final Component<E> clone = (Component<E>) super.clone();
+      if (this.states != null) {
+        clone.states = new HashMap<>(this.states);
+      }
+      final Collection<Component<?>> children = super.children();
+      if (!children.isEmpty()) {
+        for (Component<?> child : children) {
+          clone.add(child.clone());
+        }
+      }
+      return clone;
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError("Cloning not supported", e);
+    }
+  }
+
+  @Override
   public @NotNull String toString() {
     return "Component{" +
-      "parent=" + this.parent +
-      "states=" + this.states +
+      "id='" + this.id + '\'' +
+      ", parent=" + this.parent.id() +
+      ", depth=" + this.depth() +
+      ", states=" + this.states +
       '}';
   }
 
   @Override
   public int hashCode() {
-    return this.states.hashCode();
+    return Objects.hash(this.id, this.parent, this.depth(), this.states);
   }
 
   @Override
@@ -116,8 +134,19 @@ public abstract class Component<E> extends Tree {
     if (obj == null || this.getClass() != obj.getClass()) {
       return false;
     }
-
     final Component<?> component = (Component<?>) obj;
+    if (!this.id.equals(component.id)) {
+      return false;
+    }
+    if (this.parent != null && !this.parent.equals(component.parent)) {
+      return false;
+    }
+    if (this.depth() != component.depth()) {
+      return false;
+    }
+    if (this.states.size() != component.states.size()) {
+      return false;
+    }
     return Objects.equals(this.states, component.states);
   }
 }
