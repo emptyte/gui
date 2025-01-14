@@ -23,14 +23,10 @@
  */
 package team.emptyte.gui.adapt.menu;
 
+import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import team.emptyte.gui.BukkitComponent;
 
 public interface MenuInventory {
-  boolean canIntroduceItems();
-
-  @Nullable BukkitComponent findBySlot(final int slot);
-
-  void reconcile(final @NotNull BukkitComponent current);
+  boolean onClick(final @NotNull Player player, final int clickedSlot, final @NotNull ClickType clickType);
 }

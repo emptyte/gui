@@ -25,12 +25,13 @@ package team.emptyte.gui.menu.item;
 
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import team.emptyte.gui.menu.item.action.MenuItemAction;
 
 public record MenuItem(
   int slot,
   @NotNull ItemStack item,
-  @NotNull MenuItemAction action
+  @Nullable MenuItemAction action
 ) {
   public MenuItem {
     if (slot < 0) {

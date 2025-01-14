@@ -23,13 +23,11 @@
  */
 package team.emptyte.gui.item.builder.adapt.v1_21;
 
-import java.util.List;
 import java.util.Map;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.component.CustomModelData;
@@ -52,11 +50,7 @@ public final class DefaultItemBuilder extends AbstractItemBuilder {
     if (super.lore == null || super.lore.isEmpty()) {
       return ItemLore.EMPTY;
     }
-    final List<Component> lore = super.lore
-      .stream()
-      .map(ComponentHelper::deserialize)
-      .toList();
-    return new ItemLore(lore);
+    return new ItemLore(ComponentHelper.deserialize(super.lore));
   }
 
   private @NotNull ItemEnchantments createItemEnchantments() {

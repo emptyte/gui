@@ -29,7 +29,7 @@ import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import team.emptyte.gui.util.ServerVersion;
+import team.emptyte.gui.adapt.ServerVersion;
 
 public interface ItemBuilder {
   static @NotNull ItemBuilder builder(final @NotNull Material material) {

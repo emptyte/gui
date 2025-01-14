@@ -31,7 +31,7 @@ import team.emptyte.gui.menu.item.action.MenuItemAction;
 public final class MenuItemBuilder {
   private final int slot;
   private ItemStack itemStack = ItemStack.of(Material.BEDROCK);
-  private MenuItemAction action = MenuItemAction.CALL_BACK;
+  private MenuItemAction action = (player, clickedSlot, clickType) -> true;
 
   public MenuItemBuilder(final int slot) {
     this.slot = slot;

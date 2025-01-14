@@ -34,13 +34,13 @@ import org.jetbrains.annotations.Nullable;
 
 public final class ComponentHelper {
   private ComponentHelper() {
+    throw new UnsupportedOperationException("This class cannot be instantiated");
   }
 
   public static @NotNull Component deserialize(final @Nullable String string) {
     if (string == null || string.isEmpty()) {
       return Component.empty();
     }
-
     final Component component = Component.Serializer
       .fromJson(GsonComponentSerializer.gson().serialize(MiniMessage.miniMessage().deserialize(string)), RegistryAccess.EMPTY);
     if (component == null) {
@@ -53,7 +53,6 @@ public final class ComponentHelper {
     if (strings == null || strings.isEmpty()) {
       return new ArrayList<>();
     }
-
     return strings.stream()
       .map(ComponentHelper::deserialize)
       .toList();

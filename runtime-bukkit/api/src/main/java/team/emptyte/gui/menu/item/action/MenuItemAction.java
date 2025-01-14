@@ -23,12 +23,11 @@
  */
 package team.emptyte.gui.menu.item.action;
 
-import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
 import org.jetbrains.annotations.NotNull;
 
 @FunctionalInterface
 public interface MenuItemAction {
-  MenuItemAction CALL_BACK = event -> true;
-
-  boolean execute(final @NotNull InventoryClickEvent event);
+  boolean execute(final @NotNull Player player, final int clickedSlot, final @NotNull ClickType clickType);
 }

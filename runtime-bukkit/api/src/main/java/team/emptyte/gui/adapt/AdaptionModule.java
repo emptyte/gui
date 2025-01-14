@@ -25,8 +25,8 @@ package team.emptyte.gui.adapt;
 
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
-import team.emptyte.gui.BukkitComponent;
+import team.emptyte.gui.component.BukkitComponent;
 
 public interface AdaptionModule {
-  @NotNull Inventory createInventory(final @NotNull BukkitComponent root, final @NotNull String title, final int size, final boolean canIntroduceItems);
+  @NotNull Inventory createInventory(final @NotNull BukkitComponent root, final @NotNull String title, final int size, final boolean allowItemInsertion);
 }

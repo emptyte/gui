@@ -26,11 +26,12 @@ package team.emptyte.gui;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 import team.emptyte.gui.adapt.AdaptionModule;
+import team.emptyte.gui.component.BukkitComponent;
 import team.emptyte.gui.menu.adapt.v1_21.MenuInventoryImpl;
 
 public final class AdaptionModule1_21 implements AdaptionModule {
   @Override
-  public @NotNull Inventory createInventory(final @NotNull BukkitComponent root, final @NotNull String title, final int size, final boolean canIntroduceItems) {
-    return new MenuInventoryImpl(root, title, size, canIntroduceItems);
+  public @NotNull Inventory createInventory(final @NotNull BukkitComponent root, final @NotNull String title, final int size, final boolean allowItemInsertion) {
+    return new MenuInventoryImpl(root, title, size, allowItemInsertion);
   }
 }

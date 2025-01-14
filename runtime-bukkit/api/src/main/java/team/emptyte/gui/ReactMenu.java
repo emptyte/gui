@@ -21,54 +21,58 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package team.emptyte.gui.menu;
+package team.emptyte.gui;
 
+import java.util.List;
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
-import team.emptyte.gui.BukkitComponent;
 import team.emptyte.gui.adapt.AdaptionModule;
 import team.emptyte.gui.adapt.AdaptionModuloFactory;
 import team.emptyte.gui.annotated.Application;
+import team.emptyte.gui.component.BukkitComponent;
 import team.emptyte.gui.event.listener.InventoryClickListener;
+import team.emptyte.gui.menu.item.MenuItem;
+import team.emptyte.gui.tree.TreeHelper;
 
-public final class MenuManager {
+public final class ReactMenu {
   private final AdaptionModule adaptionModule;
 
-  public MenuManager(final @NotNull Plugin plugin) {
+  public ReactMenu(final @NotNull Plugin plugin) {
     this.adaptionModule = AdaptionModuloFactory.create();
 
     final PluginManager pluginManager = plugin.getServer().getPluginManager();
     pluginManager.registerEvents(new InventoryClickListener(), plugin);
   }
 
-  private @NotNull Inventory inventoryOf(final @NotNull BukkitComponent root) {
-    final Class<? extends BukkitComponent> componentClass = root.getClass();
-    final Application application = componentClass.getAnnotation(Application.class);
-    if (application == null) {
-      throw new IllegalStateException("Component class must be annotated with @Application");
+  private int calculateSize(final @NotNull BukkitComponent root) {
+    final List<BukkitComponent> components = TreeHelper.flatten(root, BukkitComponent.class);
+    int size = 9;
+    for (final @NotNull BukkitComponent component : components) {
+      for (final @NotNull MenuItem item : component.render()) {
+        size = Math.max(size, item.slot());
+      }
     }
-    final String title = application.title();
-    final int size = application.size();
-    final boolean canIntroduceItems = application.canIntroduceItems();
-    return this.adaptionModule.createInventory(root, title, size, canIntroduceItems);
+    if (size % 9 != 0) {
+      size += 9 - (size % 9);
+    }
+    return Math.min(size, 54);
   }
 
-  public void openInventory(final @NotNull Player player, final @NotNull BukkitComponent root) {
-    player.openInventory(this.inventoryOf(root));
-  }
-
-  public void openInventory(final @NotNull Player player, final @NotNull BukkitComponent root, final @NotNull String title) {
-    player.openInventory(this.adaptionModule.createInventory(root, title, 9, false));
-  }
-
-  public void openInventory(final @NotNull Player player, final @NotNull BukkitComponent root, final @NotNull String title, final int size) {
-    player.openInventory(this.adaptionModule.createInventory(root, title, size, false));
-  }
-
-  public void openInventory(final @NotNull Player player, final @NotNull BukkitComponent root, final @NotNull String title, final int size, final boolean canIntroduceItems) {
-    player.openInventory(this.adaptionModule.createInventory(root, title, size, canIntroduceItems));
+  public void render(final @NotNull Player player, final @NotNull BukkitComponent root) {
+    final Class<?> rootType = root.getClass();
+    final Application application = rootType.getAnnotation(Application.class);
+    if (application == null) {
+      throw new IllegalArgumentException("Root component must be annotated with @Application");
+    }
+    final String title = PlaceholderAPI.setPlaceholders(player, application.title());
+    int size = application.size();
+    if (size == -1) {
+      size = this.calculateSize(root);
+    }
+    final boolean allowItemInsertion = application.allowItemInsertion();
+    player.openInventory(this.adaptionModule.createInventory(root, title, size, allowItemInsertion));
   }
 }

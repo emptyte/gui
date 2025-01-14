@@ -23,77 +23,108 @@
  */
 package team.emptyte.gui.menu.adapt.v1_21;
 
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import java.util.List;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.craftbukkit.inventory.CraftInventoryCustom;
+import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import team.emptyte.gui.BukkitComponent;
-import team.emptyte.gui.Component;
 import team.emptyte.gui.adapt.menu.MenuInventory;
+import team.emptyte.gui.component.BukkitComponent;
 import team.emptyte.gui.menu.item.MenuItem;
-import team.emptyte.gui.util.TreeHelper;
+import team.emptyte.gui.menu.item.action.MenuItemAction;
+import team.emptyte.gui.tree.TreeHelper;
 
 public class MenuInventoryImpl extends CraftInventoryCustom implements MenuInventory {
-  private final boolean canIntroduceItems;
-  private final BukkitComponent root;
+  private final Int2ObjectOpenHashMap<BukkitComponent> rendered;
+  private final boolean allowItemInsertion;
 
   public MenuInventoryImpl(
     final @NotNull BukkitComponent root,
     final @NotNull String title,
     final int size,
-    final boolean canIntroduceItems
+    final boolean allowItemInsertion
   ) {
     super(null, size, MiniMessage.miniMessage().deserialize(title));
-    this.canIntroduceItems = canIntroduceItems;
-    this.root = root;
+
+    this.rendered = new Int2ObjectOpenHashMap<>();
+    this.allowItemInsertion = allowItemInsertion;
 
     // Render the components to the inventory
-    for (final Component<?> component : TreeHelper.flatten(root)) {
-      if (!(component instanceof BukkitComponent bukkitComponent)) {
-        throw new IllegalArgumentException("Component must be a BukkitComponent");
-      }
+    for (final BukkitComponent bukkitComponent : TreeHelper.flatten(root, BukkitComponent.class)) {
+      // Render the component
       for (final @NotNull MenuItem menuItem : bukkitComponent.render()) {
-        this.setItem(menuItem.slot(), menuItem.item());
-      }
-    }
-  }
-
-  @Override
-  public boolean canIntroduceItems() {
-    return this.canIntroduceItems;
-  }
-
-  @Override
-  public @Nullable BukkitComponent findBySlot(final int slot) {
-    for (final BukkitComponent bukkitComponent : TreeHelper.flatten(this.root, BukkitComponent.class)) {
-      for (final @NotNull MenuItem menuItem : bukkitComponent.render()) {
-        if (menuItem.slot() == slot) {
-          return bukkitComponent;
+        final int slot = menuItem.slot();
+        final ItemStack currentItem = this.getItem(slot);
+        // Skip if the item is already set
+        if (menuItem.item().equals(currentItem)) {
+          continue;
         }
+        this.setItem(slot, menuItem.item());
+        this.rendered.put(slot, bukkitComponent);
       }
     }
-    return null;
   }
 
-  @Override
-  public void reconcile(final @NotNull BukkitComponent after) {
-    final BukkitComponent before = TreeHelper.flatten(this.root, BukkitComponent.class)
+  private void reconcile(final @NotNull BukkitComponent dirty) {
+    // Get the base component
+    final BukkitComponent base = this.rendered.values()
       .stream()
-      .filter(component -> component.id().equals(after.id()))
+      .filter(component -> component.id().equals(dirty.id()))
       .findFirst()
       .orElse(null);
-    if (before == null) {
+    if (base == null) {
+      // The component is not rendered
       return;
     }
-    final List<BukkitComponent> diff = TreeHelper.diff(before, after, BukkitComponent.class);
-    if (diff.isEmpty()) {
+    // Get the differences between the equivalent and dirty components
+    final List<BukkitComponent> diffing = TreeHelper.diff(base, dirty, BukkitComponent.class);
+    if (diffing.isEmpty()) {
+      // No differences
       return;
     }
-    for (final BukkitComponent component : diff) {
-      for (final MenuItem menuItem : component.render()) {
-        this.setItem(menuItem.slot(), menuItem.item());
+    // Re-render the differences
+    for (final BukkitComponent diff : diffing) {
+      for (final MenuItem menuItem : diff.render()) {
+        final int slot = menuItem.slot();
+        super.setItem(slot, menuItem.item());
+        this.rendered.put(slot, diff);
       }
+    }
+  }
+
+  @Override
+  public boolean onClick(final @NotNull Player player, final int clickedSlot, final @NotNull ClickType clickType) {
+    // Get the component that was clicked
+    BukkitComponent bukkitComponent = this.rendered.get(clickedSlot);
+    if (bukkitComponent == null) {
+      return !this.allowItemInsertion;
+    }
+    bukkitComponent = (BukkitComponent) bukkitComponent.clone();
+    // Get the menu item that was clicked
+    final MenuItem menuItem = bukkitComponent.render()
+      .stream()
+      .filter(item -> item.slot() == clickedSlot)
+      .findFirst()
+      .orElse(null);
+    if (menuItem == null) {
+      return !this.allowItemInsertion;
+    }
+    // Execute the action
+    final MenuItemAction action = menuItem.action();
+    if (action == null) {
+      return !this.allowItemInsertion;
+    }
+    // Execute the action
+    if (action.execute(player, clickedSlot, clickType)) {
+      // Reconcile the component if the action was successful,
+      // otherwise, it would be meaningless since there was no change.
+      this.reconcile(bukkitComponent);
+      return true;
+    } else {
+      return !this.allowItemInsertion;
     }
   }
 }

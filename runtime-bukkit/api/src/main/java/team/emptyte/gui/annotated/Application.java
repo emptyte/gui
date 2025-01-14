@@ -32,25 +32,9 @@ import org.jetbrains.annotations.NotNull;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface Application {
-  /**
-   * The title of the inventory.
-   *
-   * @return the title of the inventory
-   */
-  @NotNull String title();
+  @NotNull String title() default "";
 
-  /**
-   * The size of the inventory, must be
-   * a multiple of 9. NOTE: The maximum size is 54.
-   *
-   * @return the size of the inventory
-   */
-  int size() default 9;
+  int size() default -1;
 
-  /**
-   * Whether the inventory can introduce items.
-   *
-   * @return whether the inventory can introduce items
-   */
-  boolean canIntroduceItems() default true;
+  boolean allowItemInsertion() default false;
 }

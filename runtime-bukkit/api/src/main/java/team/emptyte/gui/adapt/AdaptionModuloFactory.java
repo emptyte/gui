@@ -24,7 +24,6 @@
 package team.emptyte.gui.adapt;
 
 import org.jetbrains.annotations.NotNull;
-import team.emptyte.gui.util.ServerVersion;
 
 public final class AdaptionModuloFactory {
   private AdaptionModuloFactory() {

@@ -23,54 +23,25 @@
  */
 package team.emptyte.gui.event.listener;
 
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.jetbrains.annotations.NotNull;
-import team.emptyte.gui.BukkitComponent;
 import team.emptyte.gui.adapt.menu.MenuInventory;
-import team.emptyte.gui.menu.item.MenuItem;
-import team.emptyte.gui.menu.item.action.MenuItemAction;
 
 public final class InventoryClickListener implements Listener {
-
   @EventHandler
   public void onMenuClick(final @NotNull InventoryClickEvent event) {
+    final var inventory = event.getInventory();
+    if (!(inventory instanceof MenuInventory menuInventory)) {
+      return;
+    }
     final int clickedSlot = event.getSlot();
+    // Check if the slot is valid
     if (clickedSlot < 0) {
       return;
     }
-    final var inventory = event.getInventory();
-    if (inventory instanceof MenuInventory menuInventory) {
-      final boolean canIntroduceItems = menuInventory.canIntroduceItems();
-      if (event.getRawSlot() != clickedSlot && !canIntroduceItems) {
-        event.setCancelled(true);
-        return;
-      }
-      final BukkitComponent bukkitComponent = menuInventory.findBySlot(clickedSlot);
-      if (bukkitComponent == null) {
-        return;
-      }
-      MenuItem menuItem = null;
-      for (final MenuItem item : bukkitComponent.render()) {
-        final int slot = item.slot();
-        if (slot == clickedSlot) {
-          menuItem = item;
-          break;
-        }
-      }
-      if (menuItem == null) {
-        return;
-      }
-      final MenuItemAction action = menuItem.action();
-      if (action.execute(event)) {
-        event.setCancelled(true);
-      } else {
-        event.setCancelled(!canIntroduceItems);
-      }
-
-      // Reconcile the slot after the action has been executed
-      menuInventory.reconcile(bukkitComponent);
-    }
+    event.setCancelled(menuInventory.onClick((Player) event.getWhoClicked(), clickedSlot, event.getClick()));
   }
 }
